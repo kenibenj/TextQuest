@@ -1,4 +1,4 @@
-# Text-Adventure-Game
+# Text-Quest
 
 Text adventure game made for fun.
 
