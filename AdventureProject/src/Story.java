@@ -28,8 +28,20 @@ public class Story {
     ImageIcon caveImage = new ImageIcon(getClass().getClassLoader().getResource("caveSIZED.png"));
     ImageIcon merchantImage = new ImageIcon(getClass().getClassLoader().getResource("marketSIZED.png"));
     ImageIcon townImage = new ImageIcon(getClass().getClassLoader().getResource("townSIZED.png"));
-
-//    ImageIcon townImage = new ImageIcon(getClass().getClassLoader().getResource("townSIZED.png"));
+    ImageIcon banditsImage = new ImageIcon(getClass().getClassLoader().getResource("banditsSIZED.png"));
+    ImageIcon bearImage = new ImageIcon(getClass().getClassLoader().getResource("bearSIZED.png"));
+    ImageIcon boarImage = new ImageIcon(getClass().getClassLoader().getResource("boarSIZED.png"));
+    ImageIcon castleGatesImage = new ImageIcon(getClass().getClassLoader().getResource("castleGatesSIZED.png"));
+    ImageIcon darkKnightImage = new ImageIcon(getClass().getClassLoader().getResource("darkKnightSIZED.png"));
+    ImageIcon forest1Image = new ImageIcon(getClass().getClassLoader().getResource("forest1SIZED.png"));
+    ImageIcon forest2Image = new ImageIcon(getClass().getClassLoader().getResource("forest2SIZED.png"));
+    ImageIcon forest3Image = new ImageIcon(getClass().getClassLoader().getResource("forest3SIZED.png"));
+    ImageIcon forest4Image = new ImageIcon(getClass().getClassLoader().getResource("forest4SIZED.png"));
+    ImageIcon forest5Image = new ImageIcon(getClass().getClassLoader().getResource("forestSIZED5.png"));
+    ImageIcon forest6Image = new ImageIcon(getClass().getClassLoader().getResource("forest6SIZED.png"));
+    ImageIcon lordImage = new ImageIcon(getClass().getClassLoader().getResource("lordSIZED.png"));
+    ImageIcon shopImage = new ImageIcon(getClass().getClassLoader().getResource("shopSIZED.png"));
+    ImageIcon vagabondImage = new ImageIcon(getClass().getClassLoader().getResource("vagaboundSIZED.png"));
 
     ImageIcon[] enemyImages = {townImage};
 
@@ -172,7 +184,7 @@ public class Story {
     public void crewmanGossip(){
 
         if (crewman.isFriendly) {
-            gui.prepareText("Crewman: I've 'eard some rumors about some bear to the east of the town, now bugger off now would 'ya?");
+            gui.prepareText("Crewman: I've heard some rumors about some bear to the east of the town, now bugger off now would 'ya?");
         }
 
         else{

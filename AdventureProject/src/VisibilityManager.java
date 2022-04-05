@@ -48,9 +48,10 @@ public class VisibilityManager {
         onTitle = true;
         onGame = false;
 
-        gui.titleScreenLabel.setText("TEXT QUEST");
+        gui.titleScreenLabel.setText("");
         gui.titleScreen.setVisible(true);
         gui.startButtonPanel.setVisible(true);
+        gui.titleCoverLabel.setVisible(true);
 
         gui.deathButtonsPanel.setVisible(false);
         gui.deathTextPanel.setVisible(false);
@@ -78,6 +79,7 @@ public class VisibilityManager {
         gui.startButtonPanel.setVisible(false);
         gui.deathButtonsPanel.setVisible(false);
         gui.deathTextPanel.setVisible(false);
+        gui.titleCoverLabel.setVisible(false);
 
         gui.mainTextPanel.setVisible(true);
         gui.choiceButtonPanel.setVisible(true);
@@ -133,6 +135,7 @@ public class VisibilityManager {
         gui.equipmentPanel.setVisible(false);
         gui.informationPanel.setVisible(false);
         gui.actionPanel.setVisible(false);
+        gui.titleCoverLabel.setVisible(false);
 
     }
 
@@ -169,6 +172,7 @@ public class VisibilityManager {
         gui.equipmentPanel.setVisible(false);
         gui.informationPanel.setVisible(false);
         gui.actionPanel.setVisible(false);
+        gui.titleCoverLabel.setVisible(false);
 
     }
 

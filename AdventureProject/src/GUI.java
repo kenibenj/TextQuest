@@ -12,27 +12,23 @@ public class GUI {
     JFrame window;
     JPanel titleScreen, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, mainImagePanel, healthPanel, inventoryPanel, utilityButtonPanel,
             deathImagePanel, deathTextPanel, deathButtonsPanel, equipmentButtonPanel, inventoryButtonPanel, informationButtonPanel, cover, equipmentPanel, informationPanel,
-            actionPanel;
+            actionPanel, titleCover;
     JLabel titleScreenLabel, hpLabelNumber, weaponLabelName, areaLabelName, mainImageLabel, healthLabel, coverLabel,
-            deathTextLabel1, deathTextLabel2, deathImageLabel, actionLabel, goldLabel;
+            deathTextLabel1, deathTextLabel2, deathImageLabel, actionLabel, goldLabel, titleCoverLabel;
     JButton startButton, resetButton, exitButton, deathButtonContinue, deathButtonExit, mainMenuExit, inventoryImageButton, informationButton, equipmentButton;
     JTextArea mainTextArea, equipmentTextArea,informationTextArea;
     JButton[] choices = new JButton[4];
     JButton[] inventorySlots = new JButton[6];
-    JComponent glassPane;
     Font fontMainText, fontOptions, fontStats, fontTitle, fontHealth, fontStart;
     String text;
     MouseHandler mouseHandler = new MouseHandler();
 
-    ImageIcon mainImage, healthImage, coverImage, deathImage;
-
-    Font KnightsQuest;
+    ImageIcon mainImage, healthImage, coverImage, deathImage, titleCoverImage;
 
     Color gamerGrey = new Color(40, 40, 40);
     Color inkBrown = new Color(57,33,5);
 
-    Border emptyBorder = BorderFactory.createEmptyBorder();
-    CardLayout cardLayout = new CardLayout();
+    Border borderBorder = BorderFactory.createLineBorder(inkBrown, 2);
 
     Game game;
 
@@ -107,7 +103,7 @@ public class GUI {
         //Fonts
         try{
             fontMainText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(25f);
-            fontTitle = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(115f);
+            fontTitle = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("buffied.regular.ttf")).deriveFont(100f);
             fontStats = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(26f);
             fontHealth = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(42f);
             fontOptions = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(30f);
@@ -139,21 +135,23 @@ public class GUI {
 
         //Title Screen
         titleScreen = new JPanel();
-        titleScreen.setBounds(100, 100, 600, 125);
+        titleScreen.setBounds(100, 100, 600, 150);
         titleScreen.setBackground(gamerGrey);
-        titleScreenLabel = new JLabel("TEXT QUEST");
+        titleScreenLabel = new JLabel();
         titleScreenLabel.setForeground(inkBrown);
         titleScreenLabel.setFont(fontTitle);
-        Border borderTitle = BorderFactory.createLineBorder(inkBrown, 3);
-        titleScreen.setBorder(borderTitle);
+//        Border borderTitle = BorderFactory.createLineBorder(inkBrown, 3);
+//        titleScreen.setBorder(borderTitle);
         titleScreen.add(titleScreenLabel);
+
         window.add(titleScreen);
 
 
         //Start Button
         startButtonPanel = new JPanel();
-        startButtonPanel.setBounds(300,420,200,100);
+        startButtonPanel.setBounds(300,420,220,120);
         startButtonPanel.setBackground(gamerGrey);
+        startButtonPanel.setBorder(borderBorder);
         startButtonPanel.setLayout(new GridLayout(2,1));
 
         startButton = new JButton("START");
@@ -382,7 +380,6 @@ public class GUI {
         inventoryButtonPanel.setBounds(460,40, 74, 74);
         inventoryButtonPanel.setBackground(gamerGrey);
         inventoryButtonPanel.setLayout(new OverlayLayout(inventoryButtonPanel));
-        Border borderBorder = BorderFactory.createLineBorder(inkBrown, 2);
         inventoryButtonPanel.setBorder(borderBorder);
         inventoryButtonPanel.setOpaque(false);
 
@@ -541,16 +538,29 @@ public class GUI {
 
         window.add(mainImagePanel);
 
+//        //Title Cover
+//        titleCoverImage = new ImageIcon(getClass().getClassLoader().getResource("titleSIZED.png"));
+//        titleCover = new JPanel();
+//        titleCover.setBounds(0,0,800,600);
+//        titleCover.setLayout(new OverlayLayout(titleCover));
+//        titleCoverLabel = new JLabel();
+//        titleCoverLabel.setIcon(titleCoverImage);
+//        titleCover.add(titleCoverLabel);
+//        window.add(titleCover);
 
         //Cover
         coverImage = new ImageIcon(getClass().getClassLoader().getResource("backgroundSIZED.png"));
+        titleCoverImage = new ImageIcon(getClass().getClassLoader().getResource("title.png"));
         cover = new JPanel();
         cover.setBounds(0,0,800,600);
+        cover.setLayout(new OverlayLayout(cover));
         coverLabel = new JLabel();
         coverLabel.setIcon(coverImage);
+        titleCoverLabel = new JLabel();
+        titleCoverLabel.setIcon(titleCoverImage);
+        cover.add(titleCoverLabel);
         cover.add(coverLabel);
         window.add(cover);
-
 
 //        cardPanel.add(titleScreen, "titleScreen");
 //        cardPanel.add(startButtonPanel, "startButtonPanel");
