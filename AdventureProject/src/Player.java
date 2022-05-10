@@ -2,7 +2,7 @@ public class Player extends Entities{
     int gold, armor, level, XP;
     String objective,area;
 
-    String[] objectives = {"Explore the town, maybe make some friends...Who knows?","Clear out the bandits to the north"};
+    String[] objectives = {"Explore the town, maybe make some friends...Who knows?","Clear out the bandits to the north.", "Talk to the Lord."};
 
     Player(){
         reset();

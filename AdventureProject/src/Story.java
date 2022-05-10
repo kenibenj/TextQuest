@@ -1,6 +1,7 @@
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Random;
 
 public class Story {
     Game game;
@@ -43,7 +44,7 @@ public class Story {
     ImageIcon shopImage = new ImageIcon(getClass().getClassLoader().getResource("shopSIZED.png"));
     ImageIcon vagabondImage = new ImageIcon(getClass().getClassLoader().getResource("vagaboundSIZED.png"));
 
-    ImageIcon[] enemyImages = {townImage};
+    ImageIcon[] enemyImages = {};
 
     public Story(Game game, GUI gui, VisibilityManager vm){
         this.game = game;
@@ -225,17 +226,23 @@ public class Story {
     }
 
     public void lookShip(){
+        boolean hasKnife = false;
 
-        Weapon.Knife knife = new Weapon.Knife(player);
-        gui.actionLabel.setText("You've picked up the knife!");
-
-        if(player.currentWeapon.name != knife.name) {
+        for(Item item : player.playersInventory){
+            if(item instanceof Weapon.Knife){
+                hasKnife = true;
+            }
+        }
+        if(!hasKnife) {
             gui.prepareText("You look around the ship and find a knife.");
+            Weapon.Knife knife = new Weapon.Knife(player);
+            gui.actionLabel.setText("You've picked up the knife!");
             game.inventoryHandler.addItem(knife);
         }
         else{
             gui.prepareText("There is nothing to be found.");
         }
+
 
         gui.choices[0].setText("Walk off the ship");
         gui.choices[1].setText("Talk to the crewman");
@@ -407,19 +414,30 @@ public class Story {
     }
 
     public void merchantSteal() throws IOException, UnsupportedAudioFileException {
-        foe = merchant;
-        merchant.isFriendly = false;
-        gui.prepareText("You feel a sharp pain as you are tying to stealthily take a carrot." +
-                "\n\nMerchant: You'll have to be quicker than that!" +
-                "\n\n");
-        gui.actionLabel.setText("You receive 1 damage!");
+        int rand = new java.util.Random().nextInt(10);
 
-        vm.setPlayerHP(-1);
-        if(player.hp<=0){
+        if(rand < 7) {
+            foe = merchant;
+            merchant.isFriendly = false;
+            gui.prepareText("You feel a sharp pain as you are tying to stealthily take a carrot." +
+                    "\n\nMerchant: You'll have to be quicker than that!" +
+                    "\n\n");
+            gui.actionLabel.setText("You receive 1 damage!");
+
+            vm.setPlayerHP(-1);
+            }
+
+        else{
+            gui.prepareText("Preoccupied with something else, the merchant doesn't see you quickly take a cabbage from her stall." +
+                    "\n\nToo Easy.");
+            gui.actionLabel.setText("You steal a Cabbage!");
+            game.inventoryHandler.addItem(new Item.Cabbage(player));
+        }
+
+        if (player.hp <= 0) {
             player.hp = 0;
             vm.showDeathScreen(foe);
-        }
-        else {
+        } else {
             gui.choices[0].setText("Steal from merchant");
             gui.choices[1].setText("Ask about gossip");
             gui.choices[2].setText("Go back");
