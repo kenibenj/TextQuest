@@ -7,6 +7,8 @@ public class InventoryHandler implements ActionListener {
 
     Game game;
     boolean inventoryOpen = false;
+    boolean equipmentOpen = false;
+    boolean infoOpen = false;
 
     public InventoryHandler(Game game){
         this.game = game;
@@ -38,6 +40,11 @@ public class InventoryHandler implements ActionListener {
         if(inventoryFull){
             game.gui.actionLabel.setText("Your inventory is full!");
         }
+    }
+    public void start(){
+        game.gui.inventoryPanel.setVisible(false);
+        game.gui.equipmentPanel.setVisible(false);
+        game.gui.informationPanel.setVisible(false);
     }
 
     public void openInventory(){
@@ -85,15 +92,24 @@ public class InventoryHandler implements ActionListener {
     }
 
     public void modifyEquipment(){
-        game.gui.equipmentTextArea.setText("");
+        boolean visible = game.gui.equipmentTextArea.isVisible();
+        game.gui.equipmentTextArea.setText("Attack: " + game.story.player.currentWeapon.damage + "\n" +
+                "Armor: " + game.story.player.currentArmor.armorValue + "\n");
+        game.gui.equipmentTextArea.setVisible(visible);
     }
 
     public void modifyInformation(){
-        game.gui.informationTextArea.setText("");
+        boolean visible = game.gui.informationTextArea.isVisible();
+        game.gui.informationTextArea.setText("Level: " + game.story.player.level + "\n" +
+                "XP: " + game.story.player.XP + "\n" +
+                "Area: " + game.story.player.area + "\n" +
+                "Objective: " + game.story.player.objective + "\n");
+        game.gui.informationTextArea.setVisible(visible);
     }
 
-    public void modifyArea(){
-
+    public void updateInfoEquip(){
+        modifyEquipment();
+        modifyInformation();
     }
 
     @Override

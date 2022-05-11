@@ -40,10 +40,13 @@ public class KeyListener implements java.awt.event.KeyListener {
                     game.gui.crawlCounter = 0;
                     break;
                 }
-                else if(!game.visibilityManager.onGame){
-                    game.choiceHandler.startChoice();
-                    break;
-                }
+//                else if(!game.visibilityManager.onGame){
+//                    game.choiceHandler.startChoice();
+//                    break;
+//                }
+//                else{
+//                    break;
+//                }
             case KeyEvent.VK_TAB:
                 if(game.visibilityManager.onGame) {
                         for(int i = 0; i < game.gui.inventorySlots.length; i++) {

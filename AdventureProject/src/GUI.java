@@ -19,7 +19,7 @@ public class GUI {
     JTextArea mainTextArea, equipmentTextArea,informationTextArea;
     JButton[] choices = new JButton[4];
     JButton[] inventorySlots = new JButton[6];
-    Font fontMainText, fontOptions, fontStats, fontTitle, fontHealth, fontStart;
+    Font fontMainText, fontOptions, fontStats, fontTitle, fontHealth, fontStart, fontsmallText;
     String text;
     MouseHandler mouseHandler = new MouseHandler();
 
@@ -103,6 +103,7 @@ public class GUI {
         //Fonts
         try{
             fontMainText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(25f);
+            fontsmallText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(24f);
             fontTitle = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("buffied.regular.ttf")).deriveFont(100f);
             fontStats = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(26f);
             fontHealth = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(42f);
@@ -419,16 +420,16 @@ public class GUI {
         window.add(equipmentButtonPanel);
 
         equipmentPanel = new JPanel();
-        equipmentPanel.setBounds(560,40, 180, 230);
+        equipmentPanel.setBounds(540,40, 200, 230);
         equipmentPanel.setBorder(borderInventory);
         equipmentPanel.setBackground(gamerGrey);
         equipmentPanel.setOpaque(false);
 
-        equipmentTextArea = new JTextArea("equipment");
-        equipmentTextArea.setBounds(560,40, 180, 230);
+        equipmentTextArea = new JTextArea();
+        equipmentTextArea.setBounds(545,40, 195, 230);
         equipmentTextArea.setBackground(gamerGrey);
         equipmentTextArea.setForeground(inkBrown);
-        equipmentTextArea.setFont(fontMainText);
+        equipmentTextArea.setFont(fontsmallText);
         equipmentTextArea.setLineWrap(true);
         equipmentTextArea.setWrapStyleWord(true);
         equipmentTextArea.setEditable(false);
@@ -461,16 +462,16 @@ public class GUI {
         window.add(informationButtonPanel);
 
         informationPanel = new JPanel();
-        informationPanel.setBounds(560,40, 180, 230);
+        informationPanel.setBounds(540,40, 200, 230);
         informationPanel.setBorder(borderInventory);
         informationPanel.setBackground(gamerGrey);
         informationPanel.setOpaque(false);
 
         informationTextArea = new JTextArea();
-        informationTextArea.setBounds(560,40, 180, 230);
+        informationTextArea.setBounds(545,40, 195, 230);
         informationTextArea.setBackground(gamerGrey);
         informationTextArea.setForeground(inkBrown);
-        informationTextArea.setFont(fontMainText);
+        informationTextArea.setFont(fontsmallText);
         informationTextArea.setLineWrap(true);
         informationTextArea.setWrapStyleWord(true);
         informationTextArea.setEditable(false);
@@ -483,7 +484,7 @@ public class GUI {
 
         //Inventory Panel
         inventoryPanel = new JPanel();
-        inventoryPanel.setBounds(560,40, 180, 230);
+        inventoryPanel.setBounds(540,40, 200, 230);
         inventoryPanel.setLayout(new GridLayout(6,1));
         inventoryPanel.setBorder(borderInventory);
         inventoryPanel.setBackground(gamerGrey);

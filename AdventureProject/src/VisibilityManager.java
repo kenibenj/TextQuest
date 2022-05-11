@@ -18,7 +18,9 @@ public class VisibilityManager {
             "They don't care about the eyes at all.",
             "Don’t let the bastards grind you down!",
             "Where did Jack go?",
-            "It happens every now and then…", "Get real.", "What’s wrong with air guitar?"
+            "It happens every now and then…",
+            "Get real.",
+            "What’s wrong with air guitar?"
     };
 
     public void setPlayerHP(int modifier){
@@ -32,7 +34,7 @@ public class VisibilityManager {
         if(gui.game.story.player.hp<0){
             gui.game.story.player.hp = 0;
         }
-        if(gui.game.story.player.hp>15){
+        if(gui.game.story.player.hp > gui.game.story.player.maxHP){
             gui.game.story.player.hp = gui.game.story.player.maxHP;
         }
         gui.hpLabelNumber.setText(String.valueOf(gui.game.story.player.hp));
@@ -92,8 +94,7 @@ public class VisibilityManager {
         gui.inventoryButtonPanel.setVisible(true);
         gui.equipmentButtonPanel.setVisible(true);
         gui.informationButtonPanel.setVisible(true);
-        gui.equipmentPanel.setVisible(true);
-        gui.informationPanel.setVisible(true);
+
         gui.actionPanel.setVisible(true);
     }
 
@@ -177,6 +178,7 @@ public class VisibilityManager {
     }
 
     public void buttonsVisibility(){
+        gui.game.inventoryHandler.updateInfoEquip();
         for(int i = 0; i < gui.choices.length; i++){
             if(gui.choices[i].getText() == ""){
                 gui.choices[i].setVisible(false);

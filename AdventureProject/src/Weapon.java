@@ -53,4 +53,38 @@ public class Weapon extends Item {
             return switchWeapon;
         }
     }
+
+    public static class Shortsword extends Weapon{
+        public Shortsword(Entities user){
+            name = "Shortsword";
+            damage = 8;
+            currentUser = user;
+        }
+
+        public Item useItem(){
+            Item switchWeapon = currentUser.currentWeapon;
+            if (switchWeapon instanceof Weapon.Fists){
+                switchWeapon = new NothingItem();
+            }
+            currentUser.currentWeapon = this;
+            return switchWeapon;
+        }
+    }
+
+    public static class Greatsword extends Weapon{
+        public Greatsword(Entities user){
+            name = "Greatsword";
+            damage = 14;
+            currentUser = user;
+        }
+
+        public Item useItem(){
+            Item switchWeapon = currentUser.currentWeapon;
+            if (switchWeapon instanceof Weapon.Fists){
+                switchWeapon = new NothingItem();
+            }
+            currentUser.currentWeapon = this;
+            return switchWeapon;
+        }
+    }
 }

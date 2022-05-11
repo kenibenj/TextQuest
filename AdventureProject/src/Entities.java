@@ -9,6 +9,7 @@ public class Entities {
     boolean isAlert, isAlive, isFriendly;
     int maxHP;
     Weapon currentWeapon;
+    Armor currentArmor;
     Item[] playersInventory;
     boolean drinkFull;
 

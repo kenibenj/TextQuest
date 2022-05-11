@@ -29,11 +29,7 @@ public class Story {
     ImageIcon caveImage = new ImageIcon(getClass().getClassLoader().getResource("caveSIZED.png"));
     ImageIcon merchantImage = new ImageIcon(getClass().getClassLoader().getResource("marketSIZED.png"));
     ImageIcon townImage = new ImageIcon(getClass().getClassLoader().getResource("townSIZED.png"));
-    ImageIcon banditsImage = new ImageIcon(getClass().getClassLoader().getResource("banditsSIZED.png"));
-    ImageIcon bearImage = new ImageIcon(getClass().getClassLoader().getResource("bearSIZED.png"));
-    ImageIcon boarImage = new ImageIcon(getClass().getClassLoader().getResource("boarSIZED.png"));
     ImageIcon castleGatesImage = new ImageIcon(getClass().getClassLoader().getResource("castleGatesSIZED.png"));
-    ImageIcon darkKnightImage = new ImageIcon(getClass().getClassLoader().getResource("darkKnightSIZED.png"));
     ImageIcon forest1Image = new ImageIcon(getClass().getClassLoader().getResource("forest1SIZED.png"));
     ImageIcon forest2Image = new ImageIcon(getClass().getClassLoader().getResource("forest2SIZED.png"));
     ImageIcon forest3Image = new ImageIcon(getClass().getClassLoader().getResource("forest3SIZED.png"));
@@ -42,9 +38,6 @@ public class Story {
     ImageIcon forest6Image = new ImageIcon(getClass().getClassLoader().getResource("forest6SIZED.png"));
     ImageIcon lordImage = new ImageIcon(getClass().getClassLoader().getResource("lordSIZED.png"));
     ImageIcon shopImage = new ImageIcon(getClass().getClassLoader().getResource("shopSIZED.png"));
-    ImageIcon vagabondImage = new ImageIcon(getClass().getClassLoader().getResource("vagaboundSIZED.png"));
-
-    ImageIcon[] enemyImages = {};
 
     public Story(Game game, GUI gui, VisibilityManager vm){
         this.game = game;
@@ -72,6 +65,15 @@ public class Story {
             case "cabbageBuy" -> cabbageBuy();
             case "breadBuy" -> breadBuy();
             case "town" -> town();
+            case "shop" -> shop();
+            case "shopBuyWeapons" -> shopBuyWeapons();
+            case "knifeBuy" -> knifeBuy();
+            case "shortswordBuy" -> shortswordBuy();
+            case "greatswordBuy" -> greatswordBuy();
+            case "shopBuyArmor" -> shopBuyArmor();
+            case "leatherBuy" -> leatherBuy();
+            case "chainmailBuy" -> chainmailBuy();
+            case "plateBuy" -> plateBuy();
             case "gates" -> gates();
             case "guardTalk" -> guardTalk();
             case "guardAttack" -> guardAttack();
@@ -116,10 +118,10 @@ public class Story {
 
         game.inventoryHandler.addItem(new Item.Carrot(player));
 
-        gui.weaponLabelName.setText("Weapon: " + player.currentWeapon.name);
+
         gui.goldLabel.setText("Gold: " + player.gold);
-        gui.hpLabelNumber.setText(String.valueOf(player.hp));
         gui.actionLabel.setText("");
+
     }
 
     public void ship(){
@@ -426,6 +428,234 @@ public class Story {
 
             vm.setPlayerHP(-1);
             }
+
+        else{
+            gui.prepareText("Preoccupied with something else, the merchant doesn't see you quickly take a cabbage from her stall." +
+                    "\n\nToo Easy.");
+            gui.actionLabel.setText("You steal a Cabbage!");
+            game.inventoryHandler.addItem(new Item.Cabbage(player));
+        }
+
+        if (player.hp <= 0) {
+            player.hp = 0;
+            vm.showDeathScreen(foe);
+        } else {
+            gui.choices[0].setText("Steal from merchant");
+            gui.choices[1].setText("Ask about gossip");
+            gui.choices[2].setText("Go back");
+            gui.choices[3].setText("");
+
+            game.position1 = "merchantSteal";
+            game.position2 = "merchantGossip";
+            game.position3 = "docks";
+            game.position4 = "";
+            vm.buttonsVisibility();
+        }
+    }
+
+    public void shop(){
+        gui.mainImageLabel.setIcon(shopImage);
+        gui.prepareText("Shopkeeper: Arms and armor for sale!");
+
+        gui.choices[0].setText("Buy weapons");
+        gui.choices[1].setText("Buy armor");
+        gui.choices[2].setText("Steal from shopkeeper");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "shopBuyWeapons";
+        game.position2 = "shopBuyArmor";
+        game.position3 = "shopSteal";
+        game.position4 = "town";
+        vm.buttonsVisibility();
+    }
+
+    public void shopBuyWeapons(){
+        gui.prepareText("Shopkeeper: What can I get ya?");
+
+        gui.choices[0].setText("Knife (2 Gp)");
+        gui.choices[1].setText("Shortsword (7 Gp)");
+        gui.choices[2].setText("Greatsword (20 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "knifeBuy";
+        game.position2 = "shortswordBuy";
+        game.position3 = "greatswordBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void knifeBuy(){
+        if(player.gold >= 2) {
+            gui.prepareText("Shopkeeper: Better at cutting carrots than people, but it'll do.");
+
+            game.inventoryHandler.addItem(new Weapon.Knife(player));
+            player.gold = player.gold - 2;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Knife (2 Gp)");
+        gui.choices[1].setText("Shortsword (7 Gp)");
+        gui.choices[2].setText("Greatsword (20 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "knifeBuy";
+        game.position2 = "shortswordBuy";
+        game.position3 = "greatswordBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void shortswordBuy(){
+        if(player.gold >= 7) {
+            gui.prepareText("Shopkeeper: That's a deadly piece of steel!");
+
+            game.inventoryHandler.addItem(new Weapon.Shortsword(player));
+            player.gold = player.gold - 7;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Knife (2 Gp)");
+        gui.choices[1].setText("Shortsword (7 Gp)");
+        gui.choices[2].setText("Greatsword (20 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "knifeBuy";
+        game.position2 = "shortswordBuy";
+        game.position3 = "greatswordBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void greatswordBuy(){
+        if(player.gold >= 20) {
+            gui.prepareText("Shopkeeper: When it comes to weapons, bigger is better!");
+
+            game.inventoryHandler.addItem(new Weapon.Greatsword(player));
+            player.gold = player.gold - 20;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Knife (2 Gp)");
+        gui.choices[1].setText("Shortsword (7 Gp)");
+        gui.choices[2].setText("Greatsword (20 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "knifeBuy";
+        game.position2 = "shortswordBuy";
+        game.position3 = "greatswordBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void shopBuyArmor(){
+        gui.prepareText("Shopkeeper: What can I get ya?");
+
+        gui.choices[0].setText("Leather (10 Gp)");
+        gui.choices[1].setText("Chainmail (30 Gp)");
+        gui.choices[2].setText("Plate (50 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "leatherBuy";
+        game.position2 = "chainmailBuy";
+        game.position3 = "plateBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void leatherBuy(){
+        if(player.gold >= 10) {
+            gui.prepareText("Shopkeeper: Better than nothing, I suppose.");
+
+            game.inventoryHandler.addItem(new Armor.LeatherArmor(player));
+            player.gold = player.gold - 10;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Leather (10 Gp)");
+        gui.choices[1].setText("Chainmail (30 Gp)");
+        gui.choices[2].setText("Plate (50 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "leatherBuy";
+        game.position2 = "chainmailBuy";
+        game.position3 = "plateBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void chainmailBuy(){
+        if(player.gold >= 30) {
+            gui.prepareText("Shopkeeper: Sure, yeah, whatever.");
+
+            game.inventoryHandler.addItem(new Armor.ChainmailArmor(player));
+            player.gold = player.gold - 30;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Leather (10 Gp)");
+        gui.choices[1].setText("Chainmail (30 Gp)");
+        gui.choices[2].setText("Plate (50 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "leatherBuy";
+        game.position2 = "chainmailBuy";
+        game.position3 = "plateBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void plateBuy(){
+        if(player.gold >= 50) {
+            gui.prepareText("Shopkeeper: Fine piece of armor, that is.");
+
+            game.inventoryHandler.addItem(new Armor.PlateArmor(player));
+            player.gold = player.gold - 50;
+            gui.goldLabel.setText("Gold: " + player.gold);
+        }
+        else{
+            gui.prepareText("Shopkeeper: No handouts here!");
+        }
+
+        gui.choices[0].setText("Leather (10 Gp)");
+        gui.choices[1].setText("Chainmail (30 Gp)");
+        gui.choices[2].setText("Plate (50 gp)");
+        gui.choices[3].setText("Go back");
+
+        game.position1 = "leatherBuy";
+        game.position2 = "chainmailBuy";
+        game.position3 = "plateBuy";
+        game.position4 = "shop";
+        vm.buttonsVisibility();
+    }
+
+    public void shopSteal() throws IOException, UnsupportedAudioFileException {
+        int rand = new java.util.Random().nextInt(10);
+
+        if(rand < 7) {
+            foe = merchant;
+            merchant.isFriendly = false;
+            gui.prepareText("You feel a sharp pain as you are tying to stealthily take a carrot." +
+                    "\n\nMerchant: You'll have to be quicker than that!" +
+                    "\n\n");
+            gui.actionLabel.setText("You receive 1 damage!");
+
+            vm.setPlayerHP(-1);
+        }
 
         else{
             gui.prepareText("Preoccupied with something else, the merchant doesn't see you quickly take a cabbage from her stall." +
@@ -855,31 +1085,50 @@ public class Story {
     public void grabSword() throws IOException, UnsupportedAudioFileException {
         bear.isAlert = true;
 
-        gui.prepareText("You grab the sword, but the noise alerts a bear in the cave.\n\nThe bear slashes at you" +
-                "\n\nYou receive 3 points of damage.");
+        if (bear.isAlive) {
+            gui.prepareText("You try to grab the sword, but a bear slashes at you before you can.\n\nDamn.");
+            gui.actionLabel.setText("You receive 3 damage!");
 
-        game.inventoryHandler.addItem(new Weapon.Longsword(player));
+            vm.setPlayerHP(-3);
+            if (player.hp <= 0) {
+                player.hp = 0;
+                vm.showDeathScreen(foe);
+            }
 
-        vm.setPlayerHP(-3);
-        if(player.hp<=0){
-            player.hp = 0;
-            vm.showDeathScreen(foe);
+            gui.choices[0].setText("Fight bear");
+            gui.choices[1].setText("Run");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "fight";
+            game.position2 = "caveLeave";
+            game.position3 = "";
+            game.position4 = "";
+            vm.buttonsVisibility();
         }
+        else {
+            gui.prepareText("You pick up the sword. It looks a little rusty, but it's better than nothing.");
+            gui.actionLabel.setText("You receive a Longsword!");
+            game.inventoryHandler.addItem(new Weapon.Longsword(player));
 
-        gui.choices[0].setText("Fight bear");
-        gui.choices[1].setText("Run");
-        gui.choices[2].setText("");
-        gui.choices[3].setText("");
+            gui.choices[0].setText("Leave cave");
+            gui.choices[1].setText("");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
 
-        game.position1 = "fight";
-        game.position2 = "caveLeave";
-        game.position3 = "";
-        game.position4 = "";
-        vm.buttonsVisibility();
+            game.position1 = "caveLeave";
+            game.position2 = "";
+            game.position3 = "";
+            game.position4 = "";
+            vm.buttonsVisibility();
+        }
     }
 
     public void win(){
         String linkingVerb;
+        int goldDrop = new Random().nextInt(10);
+        player.gold += goldDrop;
+        gui.goldLabel.setText("Gold: " + Integer.toString(player.gold));
         if(foe.howMany>1){
             linkingVerb = "are";
         }
@@ -888,6 +1137,16 @@ public class Story {
         }
 
         gui.prepareText("The " + foe.name + " " + linkingVerb + " dead.\n\nYou're quite good at this whole killing thing!");
+        gui.actionLabel.setText("You receive " + goldDrop + " gold!");
+
+        if(player.checkLevel()){
+            if(gui.actionLabel.getText() == ""){
+                gui.actionLabel.setText("Level Up!");
+                vm.setPlayerHP(player.maxHP);
+            }
+            gui.hpLabelNumber.setText(Integer.toString(player.hp));
+           gui.actionLabel.setText(gui.actionLabel.getText() + "  ~   Level Up!");
+        }
 
         gui.choices[0].setText("Leave");
         gui.choices[1].setText("");
@@ -904,6 +1163,7 @@ public class Story {
     public void fight(){
 
         gui.prepareText(foe.name+ " HP:  " + foe.hp + "\n\nWhat do you do?");
+        gui.mainImageLabel.setIcon(foe.image);
 
         gui.choices[0].setText("Fight");
         gui.choices[1].setText("Run");
@@ -922,6 +1182,7 @@ public class Story {
         int playerDamage = new java.util.Random().nextInt(player.currentWeapon.damage);
 
         gui.prepareText("You attacked the " + foe.name.toLowerCase() + " and gave " + playerDamage + " damage!");
+        gui.actionLabel.setText("You dealt " + playerDamage + " damage!");
 
         foe.hp = foe.hp - playerDamage;
 
@@ -948,13 +1209,19 @@ public class Story {
 
     public void enemyAttack(){
 
-        int enemyDamage;
+        int enemyFinalDamage, enemyDamage;
 
         enemyDamage = new java.util.Random().nextInt(foe.attack);
+        enemyFinalDamage = enemyDamage - player.armor;
+        if(enemyFinalDamage < 0){
+            enemyFinalDamage = 0;
+        }
 
-        vm.setPlayerHP(-enemyDamage);
+        vm.setPlayerHP(-enemyFinalDamage);
+        player.XP += (enemyDamage/2);
 
-        gui.prepareText("The " + foe.name + "  attacked you for " + (enemyDamage) + " damage!");
+        gui.prepareText("The " + foe.name + "  attacked you for " + (enemyFinalDamage) + " damage!");
+        gui.actionLabel.setText("You receive " + enemyFinalDamage + " damage!");
 
         gui.choices[0].setText("Continue");
         gui.choices[1].setText("");
@@ -1000,9 +1267,6 @@ public class Story {
         gui.choices[1].setText("");
         gui.choices[2].setText("");
         gui.choices[3].setText("");
-        gui.choices[1].setVisible(false);
-        gui.choices[2].setVisible(false);
-        gui.choices[3].setVisible(false);
 
         game.position1 = "winScreen";
         game.position2 = "";

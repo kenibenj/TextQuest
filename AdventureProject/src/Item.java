@@ -1,7 +1,7 @@
 public class Item {
 
     String name;
-    int healValue;
+    int healValue, price;
     Entities currentUser;
 
     public Item useItem(){
@@ -13,6 +13,7 @@ public class Item {
             name = "Carrot";
             healValue = 2;
             currentUser = user;
+            price = 2;
         }
 
         public Item useItem(){
@@ -27,7 +28,7 @@ public class Item {
     public static class Cabbage extends Item{
         Cabbage(Entities user) {
             name = "Cabbage";
-            healValue = 5;
+            healValue = 4;
             currentUser = user;
         }
 
@@ -43,7 +44,7 @@ public class Item {
     public static class Bread extends Item{
         Bread(Entities user) {
             name = "Bread";
-            healValue = 10;
+            healValue = 7;
             currentUser = user;
         }
 
