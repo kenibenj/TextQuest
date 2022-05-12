@@ -132,7 +132,7 @@ public class GUI {
         window.setLocationRelativeTo(null);
         window.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("swordICON.png")));
         window.addMouseListener(mouseHandler);
-        window.addKeyListener(game.keyListener);
+//        window.addKeyListener(game.keyListener);
 
         //Title Screen
         titleScreen = new JPanel();
@@ -160,7 +160,7 @@ public class GUI {
         startButton.setForeground(inkBrown);
         startButton.setFont(fontStart);
         startButton.addActionListener(choiceHandler);
-        startButton.addKeyListener(game.keyListener);
+//        startButton.addKeyListener(game.keyListener);
         startButton.setFocusPainted(false);
         startButton.setActionCommand("start");
         startButtonPanel.add(startButton);
@@ -224,7 +224,7 @@ public class GUI {
         deathButtonContinue.setBackground(gamerGrey);
         deathButtonContinue.setForeground(inkBrown);
         deathButtonContinue.addActionListener(choiceHandler);
-        deathButtonContinue.addKeyListener(game.keyListener);
+//        deathButtonContinue.addKeyListener(game.keyListener);
         deathButtonContinue.setFont(fontStart);
         deathButtonContinue.setActionCommand("reset");
         deathButtonContinue.setFocusPainted(false);
@@ -235,7 +235,7 @@ public class GUI {
         deathButtonExit.setBackground(gamerGrey);
         deathButtonExit.setForeground(inkBrown);
         deathButtonExit.addActionListener(choiceHandler);
-        deathButtonExit.addKeyListener(game.keyListener);
+//        deathButtonExit.addKeyListener(game.keyListener);
         deathButtonExit.setFont(fontStart);
         deathButtonExit.setActionCommand("exit");
         deathButtonExit.setFocusPainted(false);
@@ -255,7 +255,7 @@ public class GUI {
         exitButton.setBackground(gamerGrey);
         exitButton.setForeground(inkBrown);
         exitButton.addActionListener(choiceHandler);
-        exitButton.addKeyListener(game.keyListener);
+//        exitButton.addKeyListener(game.keyListener);
         exitButton.setActionCommand("exit");
         exitButton.setFocusPainted(false);
         exitButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("exitButton.png")));
@@ -267,7 +267,7 @@ public class GUI {
         resetButton.setBackground(gamerGrey);
         resetButton.setForeground(inkBrown);
         resetButton.addActionListener(choiceHandler);
-        resetButton.addKeyListener(game.keyListener);
+//        resetButton.addKeyListener(game.keyListener);
         resetButton.setActionCommand("reset");
         resetButton.setFocusPainted(false);
         resetButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("reset.png")));
@@ -278,7 +278,7 @@ public class GUI {
         volumeUp.setBackground(gamerGrey);
         volumeUp.setForeground(inkBrown);
         volumeUp.addActionListener(choiceHandler);
-        volumeUp.addKeyListener(game.keyListener);
+//        volumeUp.addKeyListener(game.keyListener);
         volumeUp.setActionCommand("volumeUp");
         volumeUp.setFocusPainted(false);
         volumeUp.setIcon(new ImageIcon(getClass().getClassLoader().getResource("volumeUp.png")));
@@ -289,7 +289,7 @@ public class GUI {
         volumeDown.setBackground(gamerGrey);
         volumeDown.setForeground(inkBrown);
         volumeDown.addActionListener(choiceHandler);
-        volumeDown.addKeyListener(game.keyListener);
+//        volumeDown.addKeyListener(game.keyListener);
         volumeDown.setActionCommand("volumeDown");
         volumeDown.setFocusPainted(false);
         volumeDown.setIcon(new ImageIcon(getClass().getClassLoader().getResource("volumeDown.png")));
@@ -345,7 +345,7 @@ public class GUI {
             choices[i].setForeground(inkBrown);
             choices[i].setFont(fontOptions);
             choices[i].addActionListener(choiceHandler);
-            choices[i].addKeyListener(game.keyListener);
+//            choices[i].addKeyListener(game.keyListener);
             choices[i].setActionCommand("c"+(i+1));
             choices[i].setFocusPainted(false);
             choices[i].setFocusTraversalKeysEnabled(false);
@@ -389,7 +389,7 @@ public class GUI {
         inventoryImageButton.setForeground(inkBrown);
         inventoryImageButton.addActionListener(inventoryHandler);
         inventoryImageButton.setActionCommand("openInventory");
-        inventoryImageButton.addKeyListener(game.keyListener);
+//        inventoryImageButton.addKeyListener(game.keyListener);
         inventoryImageButton.setFocusPainted(false);
         inventoryImageButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("inventoryButton.png")));
         inventoryImageButton.setOpaque(false);
@@ -411,7 +411,7 @@ public class GUI {
         equipmentButton.setForeground(inkBrown);
         equipmentButton.addActionListener(inventoryHandler);
         equipmentButton.setActionCommand("openEquipment");
-        equipmentButton.addKeyListener(game.keyListener);
+//        equipmentButton.addKeyListener(game.keyListener);
         equipmentButton.setFocusPainted(false);
         equipmentButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("equipment.png")));
         equipmentButton.setOpaque(false);
@@ -453,7 +453,7 @@ public class GUI {
         informationButton.setForeground(inkBrown);
         informationButton.addActionListener(inventoryHandler);
         informationButton.setActionCommand("openInformation");
-        informationButton.addKeyListener(game.keyListener);
+//        informationButton.addKeyListener(game.keyListener);
         informationButton.setFocusPainted(false);
         informationButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("sc.png")));
         informationButton.setOpaque(false);
@@ -496,7 +496,7 @@ public class GUI {
             inventorySlots[i].setFont(fontStats);
             inventorySlots[i].addActionListener(inventoryHandler);
             inventorySlots[i].setActionCommand("slot" + (i+1));
-            inventorySlots[i].addKeyListener(game.keyListener);
+//            inventorySlots[i].addKeyListener(game.keyListener);
             inventorySlots[i].setFocusPainted(false);
             inventorySlots[i].setVisible(false);
             inventorySlots[i].setOpaque(false);

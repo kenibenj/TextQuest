@@ -1,11 +1,18 @@
+import java.net.URL;
+
 public class Item {
 
     String name;
     int healValue, price;
     Entities currentUser;
+    URL sound;
 
     public Item useItem(){
-        return null;
+        currentUser.hp = currentUser.hp + healValue;
+        if(currentUser.hp>currentUser.maxHP){
+            currentUser.hp = currentUser.maxHP;
+        }
+        return new NothingItem();
     }
 
     public static class Carrot extends Item{
@@ -14,6 +21,7 @@ public class Item {
             healValue = 2;
             currentUser = user;
             price = 2;
+            sound = getClass().getResource("eating.wav");
         }
 
         public Item useItem(){
@@ -30,6 +38,7 @@ public class Item {
             name = "Cabbage";
             healValue = 4;
             currentUser = user;
+            sound = getClass().getResource("eating.wav");
         }
 
         public Item useItem(){
@@ -46,6 +55,7 @@ public class Item {
             name = "Bread";
             healValue = 7;
             currentUser = user;
+            sound = getClass().getResource("eating.wav");
         }
 
         public Item useItem(){
@@ -60,6 +70,7 @@ public class Item {
     public static class NothingItem extends Item{
         NothingItem() {
             name = "";
+            sound = getClass().getResource("eating.wav");
         }
 
         public Item useItem(){

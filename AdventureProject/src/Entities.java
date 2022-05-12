@@ -6,12 +6,15 @@ public class Entities {
     ImageIcon image;
     int hp;
     int attack, howMany = 1;
+    int code;
     boolean isAlert, isAlive, isFriendly;
     int maxHP;
     Weapon currentWeapon;
     Armor currentArmor;
     Item[] playersInventory;
     boolean drinkFull;
+
+    public void setHowMany(int howMany){}
 
     public static class Bear extends Entities{
         public Bear() {
@@ -26,6 +29,7 @@ public class Entities {
             isAlive = true;
             isFriendly = false;
             location = "cave";
+            code = 0;
         }
     }
 
@@ -36,13 +40,14 @@ public class Entities {
         public void reset(){
             howMany = 1;
             image = new ImageIcon(getClass().getClassLoader().getResource("banditsSIZED.png"));
-            name = "Bandits";
+            name = "Group of Bandits";
             hp = howMany * 5;
             attack = howMany * 3;
             isAlert = false;
             isAlive = true;
             isFriendly = false;
             location = "bandits";
+            code = 1;
         }
 
         public void setHowMany(int howMany){
@@ -66,6 +71,7 @@ public class Entities {
             isAlive = true;
             isFriendly = false;
             location = "";
+            code = 2;
         }
 
         public void setHowMany(int howMany){
@@ -84,11 +90,11 @@ public class Entities {
             image = new ImageIcon(getClass().getClassLoader().getResource("darkKnightSIZED.png"));
             name = "Dark Knight";
             hp = howMany * 50;
-            attack = howMany * 10;
+            attack = howMany * 12;
             isAlert = false;
             isAlive = true;
             isFriendly = false;
-            location = "";
+            location = "stream";
         }
 
         public void setHowMany(int howMany){
@@ -112,6 +118,7 @@ public class Entities {
             isAlive = true;
             isFriendly = false;
             location = "";
+            code = 3;
         }
 
         public void setHowMany(int howMany){
@@ -128,13 +135,14 @@ public class Entities {
         public void reset(){
             howMany = 1;
             image = new ImageIcon(getClass().getClassLoader().getResource("wolvesSIZED.png"));
-            name = "Wolves";
+            name = "Pack of Wolves";
             hp = howMany * 4;
             attack = howMany * 2;
             isAlert = false;
             isAlive = true;
             isFriendly = false;
             location = "";
+            code = 4;
         }
 
         public void setHowMany(int howMany){
@@ -159,7 +167,41 @@ public class Entities {
         }
     }
 
+    public static class Shopkeeper extends Entities{
+        public Shopkeeper() {
+            reset();
+        }
+        public void reset(){
+            name = "Shopkeeper";
+            hp = 20;
+            attack = 5;
+            isAlert = false;
+            isAlive = true;
+            isFriendly = true;
+            location = "";
+        }
+    }
+
+    public static class Lord extends Entities{
+        boolean gaveGun;
+        public Lord() {
+            reset();
+        }
+        public void reset(){
+            name = "lord";
+            hp = 20;
+            attack = 5;
+            isAlert = false;
+            isAlive = true;
+            isFriendly = true;
+            location = "";
+            gaveGun = false;
+        }
+    }
+
     public static class Guard extends Entities{
+        public boolean gaveWrit, toldWrit;
+
         public Guard() {
             reset();
         }
@@ -170,6 +212,8 @@ public class Entities {
             isAlert = false;
             isAlive = true;
             isFriendly = true;
+            gaveWrit = false;
+            toldWrit = false;
             location = "";
         }
     }

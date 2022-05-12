@@ -1,3 +1,5 @@
+import java.net.URL;
+
 public class Armor extends Item{
     int armorValue;
 
@@ -6,6 +8,7 @@ public class Armor extends Item{
             name = "Clothes";
             armorValue = 0;
             currentUser = user;
+            sound = getClass().getResource("armor.wav");
         }
 
         public Item useItem(){
@@ -23,6 +26,7 @@ public class Armor extends Item{
             name = "Leather Armor";
             armorValue = 1;
             currentUser = user;
+            sound = getClass().getResource("armor.wav");
         }
 
         public Item useItem(){
@@ -40,6 +44,7 @@ public class Armor extends Item{
             name = "Chainmail Armor";
             armorValue = 3;
             currentUser = user;
+            sound = getClass().getResource("armor.wav");
         }
 
         public Item useItem(){
@@ -57,6 +62,7 @@ public class Armor extends Item{
             name = "Plate Armor";
             armorValue = 5;
             currentUser = user;
+            sound = getClass().getResource("armor.wav");
         }
 
         public Item useItem(){

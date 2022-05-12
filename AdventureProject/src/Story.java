@@ -8,12 +8,17 @@ public class Story {
     GUI gui;
     VisibilityManager vm;
     Player player = new Player();
+    boolean killBanditsComplete = false;
 
     Entities.Crewman crewman = new Entities.Crewman();
     Entities.Merchant merchant = new Entities.Merchant();
+    Entities.Shopkeeper shopkeeper = new Entities.Shopkeeper();
     Entities.Guard guard = new Entities.Guard();
+    Entities.Guard guardCastle = new Entities.Guard();
+    Entities.Lord lord = new Entities.Lord();
     Entities.Bear bear = new Entities.Bear();
     Entities.Bandits bandits = new Entities.Bandits();
+    Entities.darkKnight darkKnight = new Entities.darkKnight();
     Entities.God god = new Entities.God();
     Entities.Nature nature = new Entities.Nature();
     Entities foe;
@@ -38,6 +43,9 @@ public class Story {
     ImageIcon forest6Image = new ImageIcon(getClass().getClassLoader().getResource("forest6SIZED.png"));
     ImageIcon lordImage = new ImageIcon(getClass().getClassLoader().getResource("lordSIZED.png"));
     ImageIcon shopImage = new ImageIcon(getClass().getClassLoader().getResource("shopSIZED.png"));
+
+    ImageIcon[] forestImages = {forest1Image, forest2Image, forest3Image, forest4Image, forest5Image, forest6Image};
+    String[] forestSayings = {"Nothing but birds and trees out here.", "Just how big is this forest anyways?", "How boring.", "At least it's peaceful, right?"};
 
     public Story(Game game, GUI gui, VisibilityManager vm){
         this.game = game;
@@ -65,7 +73,18 @@ public class Story {
             case "cabbageBuy" -> cabbageBuy();
             case "breadBuy" -> breadBuy();
             case "town" -> town();
+            case "castle" -> castle();
+            case "enterCastle" -> enterCastle();
+            case "askWrit" -> askWrit();
+            case "lord" -> lord();
+            case "lordTwoYes" -> lordTwoYes();
+            case "lordTwoMaybe" -> lordTwoMaybe();
+            case "lordThreeYes" -> lordThreeYes();
+            case "lordFourNo" -> lordFourNo();
+            case "lordFourYes" -> lordFourYes();
+            case "lordFive" -> lordFive();
             case "shop" -> shop();
+            case "shopSteal" -> shopSteal();
             case "shopBuyWeapons" -> shopBuyWeapons();
             case "knifeBuy" -> knifeBuy();
             case "shortswordBuy" -> shortswordBuy();
@@ -76,6 +95,7 @@ public class Story {
             case "plateBuy" -> plateBuy();
             case "gates" -> gates();
             case "guardTalk" -> guardTalk();
+            case "guardTalkTwo" -> guardTalkTwo();
             case "guardAttack" -> guardAttack();
             case "guardRumors" -> guardRumors();
             case "crossroads" -> crossroads();
@@ -94,6 +114,8 @@ public class Story {
             case "fight" -> fight();
             case "playerAttack" -> playerAttack();
             case "enemyAttack" -> enemyAttack();
+            case "forest" -> forest();
+            case "forestTwo" -> forestTwo();
             case "lose" -> vm.showDeathScreen(foe);
             case "ending" -> ending();
             case "winScreen" -> vm.showWinScreen();
@@ -212,7 +234,7 @@ public class Story {
 
         gui.prepareText("You are at the docks of the town. It is a very busy area, with" +
                 " plenty of people moving about.\n\nYou see an orphan begging for money, " +
-                "a woman at a merchant's stand, as well as " +
+                "a woman at a food stand, as well as " +
                 "the rest of the town in the distance.");
 
         gui.choices[0].setText("Go to the town");
@@ -644,39 +666,40 @@ public class Story {
     }
 
     public void shopSteal() throws IOException, UnsupportedAudioFileException {
+        foe = shopkeeper;
         int rand = new java.util.Random().nextInt(10);
 
-        if(rand < 7) {
+        if(rand < 9) {
             foe = merchant;
             merchant.isFriendly = false;
-            gui.prepareText("You feel a sharp pain as you are tying to stealthily take a carrot." +
-                    "\n\nMerchant: You'll have to be quicker than that!" +
+            gui.prepareText("You feel a sharp pain as you are tying to stealthily take a knife." +
+                    "\n\nShopkeeper: What do you think you're doing?" +
                     "\n\n");
-            gui.actionLabel.setText("You receive 1 damage!");
+            gui.actionLabel.setText("You receive 2 damage!");
 
-            vm.setPlayerHP(-1);
+            vm.setPlayerHP(-2);
         }
 
         else{
-            gui.prepareText("Preoccupied with something else, the merchant doesn't see you quickly take a cabbage from her stall." +
+            gui.prepareText("Preoccupied with something else, the shopkeeper doesn't see you quickly take a shortsword from his display." +
                     "\n\nToo Easy.");
-            gui.actionLabel.setText("You steal a Cabbage!");
-            game.inventoryHandler.addItem(new Item.Cabbage(player));
+            gui.actionLabel.setText("You receive a Shortsword!");
+            game.inventoryHandler.addItem(new Weapon.Shortsword(player));
         }
 
         if (player.hp <= 0) {
             player.hp = 0;
             vm.showDeathScreen(foe);
         } else {
-            gui.choices[0].setText("Steal from merchant");
-            gui.choices[1].setText("Ask about gossip");
-            gui.choices[2].setText("Go back");
-            gui.choices[3].setText("");
+            gui.choices[0].setText("Buy weapons");
+            gui.choices[1].setText("Buy armor");
+            gui.choices[2].setText("Steal from shopkeeper");
+            gui.choices[3].setText("Go back");
 
-            game.position1 = "merchantSteal";
-            game.position2 = "merchantGossip";
-            game.position3 = "docks";
-            game.position4 = "";
+            game.position1 = "shopBuyWeapons";
+            game.position2 = "shopBuyArmor";
+            game.position3 = "shopSteal";
+            game.position4 = "town";
             vm.buttonsVisibility();
         }
     }
@@ -684,20 +707,271 @@ public class Story {
     public void town(){
         gui.mainImageLabel.setIcon(townImage);
         player.area = "Town";
+        guardCastle.toldWrit = false;
 
         gui.prepareText("You are in the center of the town. You see the gates that lead out of the city, an arms and armor shop, and the town castle.");
 
-        gui.choices[0].setText("Go to the castle");
-        gui.choices[1].setText("Go to the gates");
+        gui.choices[0].setText("Go to the gates");
+        gui.choices[1].setText("Go to the castle");
         gui.choices[2].setText("Go to the shop");
         gui.choices[3].setText("Go back to the docks");
 
-        game.position1 = "castle";
-        game.position2 = "gates";
+        game.position1 = "gates";
+        game.position2 = "castle";
         game.position3 = "shop";
         game.position4 = "docks";
         vm.buttonsVisibility();
 
+    }
+
+    public void castle(){
+        gui.mainImageLabel.setIcon(castleGatesImage);
+        player.area = "Castle";
+
+        gui.prepareText("You approach the gates of the town castle. There is a guard watching the front gate.\n\nGuard: You need a writ to come inside!");
+
+        gui.choices[0].setText("Enter castle");
+        gui.choices[1].setText("Ask about writ");
+        gui.choices[2].setText("Go back to town");
+        gui.choices[3].setText("");
+
+        game.position1 = "enterCastle";
+        game.position2 = "askWrit";
+        game.position3 = "town";
+        vm.buttonsVisibility();
+    }
+
+    public void enterCastle(){
+        gui.mainImageLabel.setIcon(castleGatesImage);
+        player.area = "Castle";
+
+        if(guard.gaveWrit) {
+            gui.prepareText("After showing the gaurd your writ, the gates of the castle slowly open.");
+
+            gui.choices[0].setText("Go to the lord");
+            gui.choices[1].setText("Go back to town");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "lord";
+            game.position2 = "town";
+            game.position3 = "";
+            game.position4 = "";
+            vm.buttonsVisibility();
+        }
+        else{
+            gui.prepareText("Guard: Are you deaf? I said you need a writ to enter, fool!");
+
+            gui.choices[0].setText("Enter castle");
+            gui.choices[1].setText("Ask about writ");
+            gui.choices[2].setText("Go back to town");
+            gui.choices[3].setText("");
+
+            game.position1 = "enterCastle";
+            game.position2 = "askWrit";
+            game.position3 = "town";
+            vm.buttonsVisibility();
+        }
+    }
+
+    public void lord(){
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        if(!lord.isAlert) {
+            gui.prepareText("You enter a large chamber. You see the lord sitting by a table with a few advisors\n" +
+                    "Lord: Greetings! I have heard that you resolved my town's bandit problems. Would you be " +
+                    "interested in assisting with another one of my issues?");
+
+            gui.choices[0].setText("'Yes'");
+            gui.choices[1].setText("'Maybe later'");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "lordTwoYes";
+            game.position2 = "lordTwoMaybe";
+            lord.isAlert = true;
+        }
+        else if(!lord.isFriendly) {
+            gui.prepareText("Lord: Have you finally come to help?");
+
+            gui.choices[0].setText("'Yes'");
+            gui.choices[1].setText("'Maybe later'");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "lordTwoYes";
+            game.position2 = "lordTwoMaybe";
+        }
+        else if((player.objective == player.objectives[4]) & (player.objectives[4] != player.objectives[5])){
+            gui.prepareText("Lord: Have you killed that wretched knight yet?");
+            if(darkKnight.isAlive) {
+
+                gui.choices[0].setText("'No'");
+                gui.choices[1].setText("");
+                gui.choices[2].setText("");
+                gui.choices[3].setText("");
+
+                game.position1 = "lordFourNo";
+            }
+            else{
+                gui.choices[0].setText("'Yes'");
+                gui.choices[1].setText("");
+                gui.choices[2].setText("");
+                gui.choices[3].setText("");
+
+                game.position1 = "lordFourYes";
+            }
+        }
+        else{
+            gui.prepareText("Lord: Hello again! Have you come to finally end the game?");
+
+            gui.choices[0].setText("End game");
+            gui.choices[1].setText("Continue playing");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "winScreen";
+            game.position2 = "lordFive";
+        }
+        vm.buttonsVisibility();
+    }
+
+    public void lordTwoYes(){
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        gui.prepareText("Lord: That is just amazing to hear! I need you to get rid of a certain knight who has been " +
+                "harassing our town for quite some time. He only reveals himself to those he deems worthy of combat, but I'm sure you " +
+                "shouldn't have any problem with that.");
+
+        gui.choices[0].setText("'I'll do it'");
+        gui.choices[1].setText("'Maybe later'");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "lordThreeYes";
+        game.position2 = "lordTwoMaybe";
+        vm.buttonsVisibility();
+    }
+
+    public void lordTwoMaybe(){
+        lord.isFriendly = false;
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        gui.prepareText("Lord: Hmmmmm....\nWell if you won't help, I have no more to discuss with you. Begone!");
+
+        gui.choices[0].setText("'Fine, I'll do it.'");
+        gui.choices[1].setText("Leave castle");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "lordThreeYes";
+        game.position2 = "castle";
+        vm.buttonsVisibility();
+    }
+
+    public void lordThreeYes(){
+        lord.isFriendly = true;
+        player.objective = player.objectives[3];
+        player.objectives[1] = player.objective;
+        player.objectives[2] = player.objective;
+        gui.actionLabel.setText("New Objective!");
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        gui.prepareText("Lord: Good luck!\n\nWhat a posh moron.");
+
+        gui.choices[0].setText("Leave castle");
+        gui.choices[1].setText("");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "castle";
+        game.position2 = "";
+        vm.buttonsVisibility();
+    }
+
+    public void lordFourNo(){
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        gui.prepareText("Lord: Then get on with it!");
+
+        gui.choices[0].setText("Leave castle");
+        gui.choices[1].setText("");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "castle";
+        vm.buttonsVisibility();
+    }
+
+    public void lordFourYes(){
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+
+        gui.prepareText("Lord: Splendid! Our town is in your debt, kind stranger.");
+
+        gui.choices[0].setText("End game");
+        gui.choices[1].setText("Continue playing");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "winScreen";
+        game.position2 = "lordFive";
+        vm.buttonsVisibility();
+    }
+
+    public void lordFive(){
+        gui.mainImageLabel.setIcon(lordImage);
+        player.area = "Castle";
+        player.objective = player.objectives[5];
+        player.objectives[0] = player.objectives[5];
+        player.objectives[1] = player.objectives[5];
+        player.objectives[2] = player.objectives[5];
+        player.objectives[3] = player.objectives[5];
+        player.objectives[4] = player.objectives[5];
+        gui.actionLabel.setText(gui.actionLabel.getText() + "  ~   New Objective!");
+
+        gui.prepareText("Lord: As your reward, you may have this strange weapon. Do be warned, it seems exceptionally dangerous!");
+        game.inventoryHandler.addItem(new Weapon.LaserGun(player));
+
+        gui.choices[0].setText("Leave castle");
+        gui.choices[1].setText("");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "castle";
+        vm.buttonsVisibility();
+    }
+
+    public void askWrit(){
+        gui.mainImageLabel.setIcon(castleGatesImage);
+        player.area = "Castle";
+        if(player.objective != player.objectives[1]){
+            player.objective = player.objectives[1];
+            gui.actionLabel.setText("New Objective!");
+        }
+
+        if(guardCastle.toldWrit){
+            gui.prepareText("Guard: Didn't I just tell you about that?");
+        }
+        else {
+            gui.prepareText("Guard: The lord is busy dealing with outlaws, so maybe you could get a writ if you 'handled' the bandits up north.");
+        }
+        gui.choices[0].setText("Enter castle");
+        gui.choices[1].setText("Ask about writ");
+        gui.choices[2].setText("Go back to town");
+        gui.choices[3].setText("");
+
+        game.position1 = "enterCastle";
+        game.position2 = "askWrit";
+        game.position3 = "town";
+
+        guardCastle.toldWrit = true;
+        vm.buttonsVisibility();
     }
 
     public void gates(){
@@ -722,7 +996,7 @@ public class Story {
             game.position2 = "guardTalk";
         }
         else{
-            game.position2 = "ending";
+            game.position2 = "guardTalkTwo";
         }
         game.position3 = "town";
         vm.buttonsVisibility();
@@ -737,6 +1011,36 @@ public class Story {
         if(!guard.isFriendly){
             gui.prepareText("Guard: You better not cause any trouble.");
         }
+
+        gui.choices[0].setText("Ask about rumors");
+        gui.choices[1].setText("Attack the guard");
+        gui.choices[2].setText("Go back");
+        gui.choices[3].setText("");
+
+        game.position1 = "guardRumors";
+        game.position2 = "guardAttack";
+        game.position3 = "gates";
+        game.position4 = "";
+        vm.buttonsVisibility();
+    }
+
+    public void guardTalkTwo(){
+
+        if(!killBanditsComplete) {
+            player.gold = player.gold + 3;
+            gui.goldLabel.setText("Gold: " + player.gold);
+            gui.actionLabel.setText("You receive " + 3 + " gold!");
+            player.objective = player.objectives[2];
+            player.objectives[1] = player.objectives[2];
+            if(!(player.objective == player.objectives[4])) {
+                gui.actionLabel.setText(gui.actionLabel.getText() + "  ~   New Objective!");
+            }
+            guard.gaveWrit = true;
+            killBanditsComplete = true;
+        }
+
+        gui.prepareText("Guard: You got rid of the bandit camp? Thank you kind stranger! You should speak to the lord, " +
+                "he is looking for someone with your talents. \n\nThe guard gives you a writ of passage to enter the castle.");
 
         gui.choices[0].setText("Ask about rumors");
         gui.choices[1].setText("Attack the guard");
@@ -861,13 +1165,13 @@ public class Story {
             gui.prepareText("The once noisy campfire is now silent, the area littered with the corpses of the bandits you have slain." +
                     "\n\nGood job!");
 
-            gui.choices[0].setText("Go back");
-            gui.choices[1].setText("");
+            gui.choices[0].setText("Enter forest");
+            gui.choices[1].setText("Go back");
             gui.choices[2].setText("");
             gui.choices[3].setText("");
 
-            game.position1 = "crossroads";
-            game.position2 = "";
+            game.position1 = "forest";
+            game.position2 = "crossroads";
             game.position3 = "";
             game.position4 = "";
             vm.buttonsVisibility();
@@ -905,7 +1209,7 @@ public class Story {
         bandits.setHowMany(2);
         foe = bandits;
 
-        gui.prepareText("You sneak up on one of the bandits and manage to quickly kill him before the others notice.\n\nBandit: What the...?");
+        gui.prepareText("You sneak up on the bandits and manage to quickly defeat one before the others notice.\n\nBandit: What the...?");
 
         gui.choices[0].setText("Fight bandits");
         gui.choices[1].setText("Run");
@@ -939,6 +1243,7 @@ public class Story {
     }
 
     public void stream(){
+        foe = darkKnight;
         gui.mainImageLabel.setIcon(streamImage);
         player.area = "Stream";
 
@@ -953,6 +1258,22 @@ public class Story {
         game.position2 = "leftStream";
         game.position3 = "crossroads";
         game.position4 = "";
+
+        if((player.objective == player.objectives[4]) & (darkKnight.isAlive)){
+            gui.mainImageLabel.setIcon(darkKnight.image);
+            gui.prepareText("You walk near the creak. You see a knight in dark armor brandishing his sword.\n\n " +
+                    "Dark Knight: I have heard rumors of your skills in combat. Let's see if they are true!");
+
+            gui.choices[0].setText("Fight");
+            gui.choices[1].setText("");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "fight";
+            game.position2 = "";
+            game.position3 = "";
+            game.position4 = "";
+        }
         vm.buttonsVisibility();
     }
 
@@ -985,7 +1306,7 @@ public class Story {
 
         if(!player.drinkFull) {
             gui.prepareText("You drink from the right stream. Something about the water tastes off, and you feel a pain" +
-                    " in your stomach.\n\nYou receive 1 damage.");
+                    " in your stomach.\n\nYou receive 2 damage.");
 
             vm.setPlayerHP(-2);
             if(player.hp<=0){
@@ -1017,7 +1338,7 @@ public class Story {
         player.area = "Cave";
 
         foe = bear;
-        if(!bear.isAlert) {
+        if(bear.isAlive) {
             gui.prepareText("You come across a cave. You see a longsword in it.");
 
             gui.choices[0].setText("Grab longsword");
@@ -1048,20 +1369,35 @@ public class Story {
     }
 
     public void caveLeave(){
-        bear.isAlert = true;
+        if(!bear.isAlive) {
+            bear.isAlert = true;
 
-        gui.prepareText("As you leave the cave crumbles in on itself.\n\nLooks like you won't be going" +
-                " back in there.");
+            gui.prepareText("As you leave the cave crumbles in on itself.\n\nLooks like you won't be going" +
+                    " back in there.");
 
-        gui.choices[0].setText("Go back");
-        gui.choices[1].setText("");
-        gui.choices[2].setText("");
-        gui.choices[3].setText("");
+            gui.choices[0].setText("Go back");
+            gui.choices[1].setText("");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
 
-        game.position1 = "crossroads";
-        game.position2 = "";
-        game.position3 = "";
-        game.position4 = "";
+            game.position1 = "crossroads";
+            game.position2 = "";
+            game.position3 = "";
+            game.position4 = "";
+        }
+        else{
+            gui.prepareText("You flee the cave. \n\n It was fairly spooky, after all.");
+
+            gui.choices[0].setText("Go back");
+            gui.choices[1].setText("");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "crossroads";
+            game.position2 = "";
+            game.position3 = "";
+            game.position4 = "";
+        }
         vm.buttonsVisibility();
     }
 
@@ -1125,16 +1461,16 @@ public class Story {
     }
 
     public void win(){
-        String linkingVerb;
+        String linkingVerb = "is";
         int goldDrop = new Random().nextInt(10);
         player.gold += goldDrop;
         gui.goldLabel.setText("Gold: " + Integer.toString(player.gold));
-        if(foe.howMany>1){
-            linkingVerb = "are";
-        }
-        else{
-            linkingVerb = "is";
-        }
+//        if(foe.howMany>1){
+//            linkingVerb = "are";
+//        }
+//        else{
+//            linkingVerb = "is";
+//        }
 
         gui.prepareText("The " + foe.name + " " + linkingVerb + " dead.\n\nYou're quite good at this whole killing thing!");
         gui.actionLabel.setText("You receive " + goldDrop + " gold!");
@@ -1146,6 +1482,15 @@ public class Story {
             }
             gui.hpLabelNumber.setText(Integer.toString(player.hp));
            gui.actionLabel.setText(gui.actionLabel.getText() + "  ~   Level Up!");
+
+            if(player.level >= 5){
+                player.objective = player.objectives[4];
+                player.objectives[0] = player.objectives[4];
+                player.objectives[1] = player.objectives[4];
+                player.objectives[2] = player.objectives[4];
+                player.objectives[3] = player.objectives[4];
+                gui.actionLabel.setText("New Objective!");
+            }
         }
 
         gui.choices[0].setText("Leave");
@@ -1165,15 +1510,26 @@ public class Story {
         gui.prepareText(foe.name+ " HP:  " + foe.hp + "\n\nWhat do you do?");
         gui.mainImageLabel.setIcon(foe.image);
 
-        gui.choices[0].setText("Fight");
-        gui.choices[1].setText("Run");
-        gui.choices[2].setText("");
-        gui.choices[3].setText("");
+        if(foe == darkKnight) {
+            gui.choices[0].setText("Fight");
+            gui.choices[1].setText("");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
 
-        game.position1 = "playerAttack";
-        game.position2 = foe.location;
-        game.position3 = "";
-        game.position4 = "";
+            game.position1 = "playerAttack";
+        }
+
+        else{
+            gui.choices[0].setText("Fight");
+            gui.choices[1].setText("Run");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "playerAttack";
+            game.position2 = foe.location;
+            game.position3 = "";
+            game.position4 = "";
+        }
         vm.buttonsVisibility();
     }
 
@@ -1212,13 +1568,13 @@ public class Story {
         int enemyFinalDamage, enemyDamage;
 
         enemyDamage = new java.util.Random().nextInt(foe.attack);
-        enemyFinalDamage = enemyDamage - player.armor;
+        enemyFinalDamage = enemyDamage - player.currentArmor.armorValue;
         if(enemyFinalDamage < 0){
             enemyFinalDamage = 0;
         }
 
         vm.setPlayerHP(-enemyFinalDamage);
-        player.XP += (enemyDamage/2);
+        player.XP += ((enemyDamage + 1)/2);
 
         gui.prepareText("The " + foe.name + "  attacked you for " + (enemyFinalDamage) + " damage!");
         gui.actionLabel.setText("You receive " + enemyFinalDamage + " damage!");
@@ -1241,6 +1597,68 @@ public class Story {
             game.position3 = "";
             game.position4 = "";
         }
+    }
+
+    public void forest(){
+        int forestType = new Random().nextInt(6);
+        gui.mainImageLabel.setIcon(forestImages[forestType]);
+        gui.prepareText("You begin to wander into the forest. Be careful, there are many foes out here...");
+
+        gui.choices[0].setText("Keep wandering");
+        gui.choices[1].setText("Go back");
+        gui.choices[2].setText("");
+        gui.choices[3].setText("");
+
+        game.position1 = "forestTwo";
+        game.position2 = "bandits";
+        game.position3 = "";
+        game.position4 = "";
+        vm.buttonsVisibility();
+    }
+
+    public void forestTwo(){
+        int forestImageType = new Random().nextInt(6);
+        gui.mainImageLabel.setIcon(forestImages[forestImageType]);
+        int enemyFound = new Random().nextInt(100);
+        if(enemyFound > 80){
+            int enemyType = new Random().nextInt(5);
+            switch (enemyType){
+                case 0: foe = new Entities.Bear(); break;
+                case 1: foe = new Entities.Bandits(); foe.setHowMany(new Random().nextInt(3) + 3); break;
+                case 2: foe = new Entities.Boar(); break;
+                case 3: foe = new Entities.Vagabound(); break;
+                case 4: foe = new Entities.Wolves(); foe.setHowMany(new Random().nextInt(5) + 4); break;
+            }
+            gui.mainImageLabel.setIcon(foe.image);
+            foe.location = "forest";
+            gui.prepareText("You encounter a " + foe.name + "!");
+
+            gui.choices[0].setText("Fight " + foe.name);
+            gui.choices[1].setText("Go back");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "fight";
+            game.position2 = "bandits";
+            game.position3 = "";
+            game.position4 = "";
+        }
+
+        else {
+            int forestMessageType = new Random().nextInt(4);
+            gui.prepareText("You keep wandering into the forest. \n\n" + forestSayings[forestMessageType]);
+
+            gui.choices[0].setText("Keep wandering");
+            gui.choices[1].setText("Go back");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "forestTwo";
+            game.position2 = "bandits";
+            game.position3 = "";
+            game.position4 = "";
+        }
+        vm.buttonsVisibility();
     }
 
     public void lose(){

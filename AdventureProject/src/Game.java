@@ -8,7 +8,6 @@ public class Game {
     Story story = new Story(this, gui, visibilityManager);
     ChoiceHandler choiceHandler = new ChoiceHandler(this);
     SoundEffectHandler soundEffectHandler = new SoundEffectHandler();
-    KeyListener keyListener = new KeyListener(this);
     InventoryHandler inventoryHandler = new InventoryHandler(this);
 
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException{

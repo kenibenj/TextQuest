@@ -115,12 +115,13 @@ public class VisibilityManager {
         gui.deathImagePanel.setVisible(true);
 
         gui.titleScreenLabel.setText("YOU DIED");
-        if (foe.howMany == 1) {
-            gui.deathTextLabel1.setText("A " + foe.name.toLowerCase(Locale.ROOT) + " killed you!");
-        }
-        else{
-            gui.deathTextLabel1.setText(foe.name + " killed you!");
-        }
+        gui.deathTextLabel1.setText("A " + foe.name.toLowerCase(Locale.ROOT) + " killed you!");
+//        if (foe.howMany == 1) {
+//            gui.deathTextLabel1.setText("A " + foe.name.toLowerCase(Locale.ROOT) + " killed you!");
+//        }
+//        else{
+//            gui.deathTextLabel1.setText(foe.name + " killed you!");
+//        }
 
         gui.startButtonPanel.setVisible(false);
         gui.mainTextPanel.setVisible(false);

@@ -1,12 +1,14 @@
+import java.net.URL;
+
 public class Weapon extends Item {
     int damage;
-
 
     public static class Fists extends Weapon{
         public Fists(Entities user){
             name = "Fists";
             damage = 4;
             currentUser = user;
+            sound = getClass().getResource("weapon.wav");
         }
 
         public Item useItem(){
@@ -25,6 +27,7 @@ public class Weapon extends Item {
             name = "Knife";
             damage = 6;
             currentUser = user;
+            sound = getClass().getResource("weapon.wav");
         }
 
         public Item useItem(){
@@ -42,6 +45,7 @@ public class Weapon extends Item {
             name = "Longsword";
             damage = 10;
             currentUser = user;
+            sound = getClass().getResource("weapon.wav");
         }
 
         public Item useItem(){
@@ -59,6 +63,7 @@ public class Weapon extends Item {
             name = "Shortsword";
             damage = 8;
             currentUser = user;
+            sound = getClass().getResource("weapon.wav");
         }
 
         public Item useItem(){
@@ -76,6 +81,25 @@ public class Weapon extends Item {
             name = "Greatsword";
             damage = 14;
             currentUser = user;
+            sound = getClass().getResource("weapon.wav");
+        }
+
+        public Item useItem(){
+            Item switchWeapon = currentUser.currentWeapon;
+            if (switchWeapon instanceof Weapon.Fists){
+                switchWeapon = new NothingItem();
+            }
+            currentUser.currentWeapon = this;
+            return switchWeapon;
+        }
+    }
+
+    public static class LaserGun extends Weapon{
+        public LaserGun(Entities user){
+            name = "Laser gun";
+            damage = 1000;
+            currentUser = user;
+            sound = getClass().getResource("weapon.wav");
         }
 
         public Item useItem(){
