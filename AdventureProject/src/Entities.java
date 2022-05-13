@@ -28,7 +28,7 @@ public class Entities {
             isAlert = false;
             isAlive = true;
             isFriendly = false;
-            location = "cave";
+            location = "grabSword";
             code = 0;
         }
     }

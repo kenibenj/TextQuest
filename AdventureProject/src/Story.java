@@ -8,7 +8,7 @@ public class Story {
     GUI gui;
     VisibilityManager vm;
     Player player = new Player();
-    boolean killBanditsComplete = false;
+    boolean killBanditsComplete;
 
     Entities.Crewman crewman = new Entities.Crewman();
     Entities.Merchant merchant = new Entities.Merchant();
@@ -130,6 +130,11 @@ public class Story {
         merchant.reset();
         guard.reset();
         player.reset();
+        lord.reset();
+        guardCastle.reset();
+        darkKnight.reset();
+        shopkeeper.reset();
+        killBanditsComplete = false;
 
         game.inventoryHandler.reset();
 
@@ -832,7 +837,7 @@ public class Story {
             gui.choices[3].setText("");
 
             game.position1 = "winScreen";
-            game.position2 = "lordFive";
+            game.position2 = "castle";
         }
         vm.buttonsVisibility();
     }
@@ -1419,6 +1424,7 @@ public class Story {
     }
 
     public void grabSword() throws IOException, UnsupportedAudioFileException {
+        gui.mainImageLabel.setIcon(caveImage);
         bear.isAlert = true;
 
         if (bear.isAlive) {
