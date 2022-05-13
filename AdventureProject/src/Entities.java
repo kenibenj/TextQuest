@@ -39,7 +39,7 @@ public class Entities {
         }
         public void reset(){
             howMany = 1;
-            image = new ImageIcon(getClass().getClassLoader().getResource("banditsSIZED.png"));
+            image = new ImageIcon(getClass().getClassLoader().getResource("banditsSized.png"));
             name = "Group of Bandits";
             hp = howMany * 5;
             attack = howMany * 3;

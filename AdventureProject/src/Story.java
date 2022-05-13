@@ -33,8 +33,8 @@ public class Story {
     ImageIcon campImage = new ImageIcon(getClass().getClassLoader().getResource("campSIZED.png"));
     ImageIcon caveImage = new ImageIcon(getClass().getClassLoader().getResource("caveSIZED.png"));
     ImageIcon merchantImage = new ImageIcon(getClass().getClassLoader().getResource("marketSIZED.png"));
-    ImageIcon townImage = new ImageIcon(getClass().getClassLoader().getResource("townSIZED.png"));
-    ImageIcon castleGatesImage = new ImageIcon(getClass().getClassLoader().getResource("castleGatesSIZED.png"));
+    ImageIcon townImage = new ImageIcon(getClass().getClassLoader().getResource("townSized.png"));
+    ImageIcon castleGatesImage = new ImageIcon(getClass().getClassLoader().getResource("castleGatesSized.png"));
     ImageIcon forest1Image = new ImageIcon(getClass().getClassLoader().getResource("forest1SIZED.png"));
     ImageIcon forest2Image = new ImageIcon(getClass().getClassLoader().getResource("forest2SIZED.png"));
     ImageIcon forest3Image = new ImageIcon(getClass().getClassLoader().getResource("forest3SIZED.png"));
