@@ -9,6 +9,7 @@ public class Game {
     ChoiceHandler choiceHandler = new ChoiceHandler(this);
     SoundEffectHandler soundEffectHandler = new SoundEffectHandler();
     InventoryHandler inventoryHandler = new InventoryHandler(this);
+    DropItemHandler dropItemHandler = new DropItemHandler(this);
 
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException{
 

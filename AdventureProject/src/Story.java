@@ -1374,6 +1374,7 @@ public class Story {
     }
 
     public void caveLeave(){
+        gui.mainImageLabel.setIcon(caveImage);
         if(!bear.isAlive) {
             bear.isAlert = true;
 
@@ -1407,19 +1408,50 @@ public class Story {
     }
 
     public void caveLook(){
+        gui.mainImageLabel.setIcon(caveImage);
 
-        gui.prepareText("You look around the cave and see a bear. The bear hasn't noticed you yet.");
+        if(bear.isAlive && !(bear.isAlert)) {
+            gui.prepareText("You look around the cave and see a bear. The bear hasn't noticed you yet.");
 
 
-        gui.choices[0].setText("Fight bear");
-        gui.choices[1].setText("Grab longsword");
-        gui.choices[2].setText("Go back");
-        gui.choices[3].setText("");
+            gui.choices[0].setText("Fight bear");
+            gui.choices[1].setText("Grab longsword");
+            gui.choices[2].setText("Go back");
+            gui.choices[3].setText("");
 
-        game.position1 = "fight";
-        game.position2 = "grabSword";
-        game.position3 = "caveLeave";
-        game.position4 = "";
+            game.position1 = "fight";
+            game.position2 = "grabSword";
+            game.position3 = "caveLeave";
+            game.position4 = "";
+        }
+        else if(bear.isAlert && bear.isAlive) {
+            gui.prepareText("You look around the cave and see a bear. The bear is now roaming the cave aggressively.");
+
+
+            gui.choices[0].setText("Fight bear");
+            gui.choices[1].setText("Grab longsword");
+            gui.choices[2].setText("Go back");
+            gui.choices[3].setText("");
+
+            game.position1 = "fight";
+            game.position2 = "grabSword";
+            game.position3 = "caveLeave";
+            game.position4 = "";
+        }
+        else{
+            gui.prepareText("The cave seems to be empty now. The longsword glimmers a bit.");
+
+
+            gui.choices[0].setText("Grab longsword");
+            gui.choices[1].setText("Go back");
+            gui.choices[2].setText("");
+            gui.choices[3].setText("");
+
+            game.position1 = "grabSword";
+            game.position2 = "caveLeave";
+            game.position3 = "";
+            game.position4 = "";
+        }
         vm.buttonsVisibility();
     }
 
@@ -1512,7 +1544,7 @@ public class Story {
     }
 
     public void fight(){
-
+        foe.isAlert = true;
         gui.prepareText(foe.name+ " HP:  " + foe.hp + "\n\nWhat do you do?");
         gui.mainImageLabel.setIcon(foe.image);
 
@@ -1626,7 +1658,7 @@ public class Story {
         int forestImageType = new Random().nextInt(6);
         gui.mainImageLabel.setIcon(forestImages[forestImageType]);
         int enemyFound = new Random().nextInt(100);
-        if(enemyFound > 80){
+        if(enemyFound > 70){
             int enemyType = new Random().nextInt(5);
             switch (enemyType){
                 case 0: foe = new Entities.Bear(); break;

@@ -28,6 +28,7 @@ public class ChoiceHandler implements ActionListener {
     public void oneChoice() {
         if (game.visibilityManager.onGame) {
             try {
+                game.soundEffectHandler.stop();
                 game.story.selectPosition(game.position1);
                 game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
             } catch (IOException e) {
@@ -41,6 +42,7 @@ public class ChoiceHandler implements ActionListener {
     public void twoChoice() {
         if (game.visibilityManager.onGame) {
             try {
+                game.soundEffectHandler.stop();
                 game.story.selectPosition(game.position2);
                 game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
             } catch (IOException e) {
@@ -53,6 +55,7 @@ public class ChoiceHandler implements ActionListener {
     public void threeChoice() {
         if (game.visibilityManager.onGame) {
             try {
+                game.soundEffectHandler.stop();
                 game.story.selectPosition(game.position3);
                 game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
             } catch (IOException e) {
@@ -66,6 +69,7 @@ public class ChoiceHandler implements ActionListener {
     public void fourChoice() {
         if (game.visibilityManager.onGame) {
             try {
+                game.soundEffectHandler.stop();
                 game.story.selectPosition(game.position4);
                 game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
             } catch (IOException e) {
@@ -79,6 +83,7 @@ public class ChoiceHandler implements ActionListener {
     public void resetChoice(){
         game.story.toTitle();
         try {
+            game.soundEffectHandler.stop();
             game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
         } catch (IOException e) {
             e.printStackTrace();

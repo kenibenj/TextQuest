@@ -29,8 +29,22 @@ public class SoundEffectHandler {
         soundClip.start();
     }
 
-    public static void stop(URL url){
-        soundClip.stop();
+    public static void stop(){
+
+        if(!(soundClip == null)) {
+            soundClip.stop();
+            soundClip.close();
+        }
+    }
+
+    public static boolean isRunning(){
+
+        if(!(soundClip == null)) {
+            return soundClip.isRunning();
+        }
+        else {
+            return false;
+        }
     }
 
     public static void volumeUp(){

@@ -3,9 +3,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class GUI {
 
@@ -19,7 +19,7 @@ public class GUI {
     JTextArea mainTextArea, equipmentTextArea,informationTextArea;
     JButton[] choices = new JButton[4];
     JButton[] inventorySlots = new JButton[6];
-    Font fontMainText, fontOptions, fontStats, fontTitle, fontHealth, fontStart, fontsmallText;
+    Font fontMainText, fontOptions, fontStats, fontTitle, fontHealth, fontStart, fontsmallText, fontDropText;
     String text;
     MouseHandler mouseHandler = new MouseHandler();
 
@@ -27,6 +27,8 @@ public class GUI {
 
     Color gamerGrey = new Color(40, 40, 40);
     Color inkBrown = new Color(57,33,5);
+    Color silk = new Color(255,228,196, 100);
+    Color empty = new Color(255,228,196, 0);
 
     Border borderBorder = BorderFactory.createLineBorder(inkBrown, 2);
 
@@ -36,6 +38,8 @@ public class GUI {
     //Text Crawl
     int crawlCounter = 0;
     URL textCrawlSoundURL = getClass().getResource("TextCrawl.wav");
+    URL textCrawlSoundTwo = getClass().getResource("writeSix.wav");
+
 
     Timer timer = new Timer(20, new ActionListener() {
         @Override
@@ -50,9 +54,9 @@ public class GUI {
             mainTextArea.append(addedCharacter);
             crawlCounter++;
 
-            if(crawlCounter%2 == 0) {
+            if(!(SoundEffectHandler.isRunning()) || crawlCounter == 1) {
                 try {
-                    SoundEffectHandler.playFile(textCrawlSoundURL);
+                    SoundEffectHandler.playFile(textCrawlSoundTwo);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
@@ -63,6 +67,7 @@ public class GUI {
             if(crawlCounter == arrayNumber){
                 crawlCounter = 0;
                 timer.stop();
+                SoundEffectHandler.stop();
             }
         }
     });
@@ -75,6 +80,7 @@ public class GUI {
         @Override
         public void mousePressed(MouseEvent e) {
             timer.stop();
+            SoundEffectHandler.stop();
             mainTextArea.setText(text);
             crawlCounter = 0;
         }
@@ -104,6 +110,7 @@ public class GUI {
         try{
             fontMainText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(25f);
             fontsmallText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(24f);
+            fontDropText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(20f);
             fontTitle = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("buffied.regular.ttf")).deriveFont(100f);
             fontStats = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(26f);
             fontHealth = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(42f);
@@ -484,10 +491,15 @@ public class GUI {
 
         //Inventory Panel
         inventoryPanel = new JPanel();
-        inventoryPanel.setBounds(540,40, 200, 230);
+        inventoryPanel.setBounds(540,40, 200, 220);
         inventoryPanel.setLayout(new GridLayout(6,1));
         inventoryPanel.setBorder(borderInventory);
         inventoryPanel.setBackground(gamerGrey);
+        JPopupMenu dropPopUp = new JPopupMenu();
+        JMenuItem dropItem = new JMenuItem("Drop Item");
+        dropItem.setFont(fontDropText);
+        dropItem.addActionListener(game.dropItemHandler);
+        dropPopUp.add(dropItem);
 
         for(int i = 0; i < 6; i++){
             inventorySlots[i] = new JButton();
@@ -502,10 +514,41 @@ public class GUI {
             inventorySlots[i].setOpaque(false);
             inventorySlots[i].setFocusTraversalKeysEnabled(false);
             inventoryPanel.add(inventorySlots[i]);
+            int finalI = i;
+            inventorySlots[i].addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                    if(SwingUtilities.isRightMouseButton(e) && !(game.story.player.playersInventory[finalI] instanceof Item.NothingItem)){
+                        dropPopUp.show(inventorySlots[finalI],e.getX(),e.getY());
+                        game.dropItemHandler.setSlot(finalI);
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
         }
 
         window.add(inventoryPanel);
-
 
         //Gold and Weapon Panel
         playerPanel = new JPanel();
@@ -600,6 +643,48 @@ public class GUI {
         }
         choiceButtonPanel.setOpaque(false);
         mainTextPanel.setOpaque(false);
+
+
+        //Button Borders and Highlights
+        Border buttonBorderNormal = BorderFactory.createLineBorder(inkBrown, 1);
+        Border buttonBorderHighlight = BorderFactory.createLineBorder(inkBrown, 2);
+        Border buttonBorderPress = BorderFactory.createLineBorder(inkBrown, 3);
+
+        ArrayList<JButton> buttonList = new ArrayList();
+        buttonList.add(exitButton);
+        buttonList.add(resetButton);
+        buttonList.add(startButton);
+        buttonList.add(mainMenuExit);
+        buttonList.add(volumeDown);
+        buttonList.add(volumeUp);
+        buttonList.add(informationButton);
+        buttonList.add(inventoryImageButton);
+        buttonList.add(equipmentButton);
+        for (JButton button: inventorySlots){
+            buttonList.add(button);
+        }
+        for (JButton button: choices){
+            buttonList.add(button);
+        }
+
+        for(JButton button: buttonList){
+            button.setContentAreaFilled(false);
+            button.setBorder(buttonBorderNormal);
+            button.getModel().addChangeListener(e -> {
+                button.setOpaque(false);
+                final ButtonModel model = (ButtonModel) e.getSource();
+                if (model.isRollover()) {
+                    button.setBorder(buttonBorderHighlight);
+                }
+                else {
+                    button.setBorder(buttonBorderNormal);
+                }
+                if(model.isPressed()){
+                    button.setBorder(buttonBorderPress);
+                }
+            });
+        }
+
 
         window.setVisible(true);
     }

@@ -1,6 +1,9 @@
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class InventoryHandler implements ActionListener {
@@ -19,6 +22,11 @@ public class InventoryHandler implements ActionListener {
         for(int i = 0; i < game.gui.inventorySlots.length; i++) {
             game.gui.inventorySlots[i].setVisible(false);
         }
+    }
+
+    public void dropItem(int slot){
+        game.story.player.playersInventory[slot] = new Item.NothingItem();
+        game.gui.inventorySlots[slot].setText(game.story.player.playersInventory[slot].name);
     }
 
     public void addItem(Item item){

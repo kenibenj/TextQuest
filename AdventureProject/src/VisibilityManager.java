@@ -192,26 +192,26 @@ public class VisibilityManager {
 
 
 
-    static int opacityCounter = 0;
-
-    public void fadeOut(JPanel frame){
-
-        System.out.println(opacityCounter);
-        opacityCounter = 0;
-        fadeTimer = new Timer(50, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setBackground(new Color(0,0,0,opacityCounter));
-                opacityCounter++;
-                gui.window.add(frame);
-
-                if(opacityCounter >= 255){
-                    opacityCounter = 255;
-                    fadeTimer.stop();
-                }
-                System.out.println(opacityCounter);
-            }
-        });
-        fadeTimer.start();
-    }
+//    static int opacityCounter = 0;
+//
+//    public void fadeOut(JPanel frame){
+//
+//        System.out.println(opacityCounter);
+//        opacityCounter = 0;
+//        fadeTimer = new Timer(50, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                frame.setBackground(new Color(0,0,0,opacityCounter));
+//                opacityCounter++;
+//                gui.window.add(frame);
+//
+//                if(opacityCounter >= 255){
+//                    opacityCounter = 255;
+//                    fadeTimer.stop();
+//                }
+//                System.out.println(opacityCounter);
+//            }
+//        });
+//        fadeTimer.start();
+//    }
 }
