@@ -7,11 +7,29 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class InventoryHandler implements ActionListener {
+    AbstractAction actionInv = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            openInventory();
+        }
+    };
+
+    AbstractAction actionEquip = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            openEquipment();
+        }
+    };
+
+    AbstractAction actionInfo = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            openInformation();
+        }
+    };
 
     Game game;
     boolean inventoryOpen = false;
-    boolean equipmentOpen = false;
-    boolean infoOpen = false;
 
     public InventoryHandler(Game game){
         this.game = game;

@@ -1,6 +1,7 @@
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 
 public class SoundEffectHandler {
     URL buttonMain = getClass().getResource("button.wav");
@@ -12,6 +13,7 @@ public class SoundEffectHandler {
     static FloatControl floatControl;
     static boolean mute = false;
     static Clip soundClip = null;
+    static Clip crawlSoundClip = null;
 
 
     public static void playFile(URL soundFileName) throws IOException, UnsupportedAudioFileException {
@@ -29,18 +31,32 @@ public class SoundEffectHandler {
         soundClip.start();
     }
 
+    public static void playFileRandomStart(URL soundFileName) throws IOException, UnsupportedAudioFileException {
+        try{
+            AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileName);
+            crawlSoundClip = AudioSystem.getClip();
+            crawlSoundClip.open(sound);
+            floatControl = (FloatControl)crawlSoundClip.getControl(FloatControl.Type.MASTER_GAIN);
+            floatControl.setValue(currentVolume);
+        }
+        catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        crawlSoundClip.setMicrosecondPosition(new Random().nextInt((int) crawlSoundClip.getMicrosecondLength()));
+        crawlSoundClip.start();
+    }
+
     public static void stop(){
 
-        if(!(soundClip == null)) {
-            soundClip.stop();
-            soundClip.close();
+        if(!(crawlSoundClip == null)) {
+            crawlSoundClip.stop();
         }
     }
 
     public static boolean isRunning(){
 
-        if(!(soundClip == null)) {
-            return soundClip.isRunning();
+        if(!(crawlSoundClip == null)) {
+            return crawlSoundClip.isRunning();
         }
         else {
             return false;

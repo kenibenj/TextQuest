@@ -1,4 +1,5 @@
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,9 +9,11 @@ import java.io.IOException;
 public class ChoiceHandler implements ActionListener {
 
     Game game;
+    ImageIcon howToPlayImage;
 
     public ChoiceHandler(Game game){
         this.game = game;
+        howToPlayImage = new ImageIcon(getClass().getClassLoader().getResource("howToPlaySIZED.png"));
     }
 
     public void startChoice(){
@@ -82,6 +85,57 @@ public class ChoiceHandler implements ActionListener {
 
     public void resetChoice(){
         game.story.toTitle();
+        game.gui.titleCoverLabel.setIcon(game.gui.titleCoverImage);
+        try {
+            game.soundEffectHandler.stop();
+            game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void howToPlayChoice(){
+        game.gui.titleCoverLabel.setIcon(howToPlayImage);
+        game.visibilityManager.showHowToPlayScreen();
+        try {
+            game.soundEffectHandler.stop();
+            game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goBackChoice(){
+        game.gui.titleCoverLabel.setIcon(game.gui.titleCoverImage);
+        game.visibilityManager.showTitleScreen();
+        try {
+            game.soundEffectHandler.stop();
+            game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void volumeUp(){
+        SoundEffectHandler.volumeUp();
+        try {
+            game.soundEffectHandler.stop();
+            game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void volumeDown(){
+        SoundEffectHandler.volumeDown();
         try {
             game.soundEffectHandler.stop();
             game.soundEffectHandler.playFile(game.soundEffectHandler.buttonMain);
@@ -96,7 +150,6 @@ public class ChoiceHandler implements ActionListener {
     public void actionPerformed(ActionEvent event) {
 
         String choice = event.getActionCommand();
-
 
         switch (choice){
             case "start" :
@@ -127,10 +180,16 @@ public class ChoiceHandler implements ActionListener {
                 fourChoice();
                 break;
             case "volumeUp" :
-                SoundEffectHandler.volumeUp();
+                volumeUp();
                 break;
             case "volumeDown" :
-                SoundEffectHandler.volumeDown();
+                volumeDown();
+                break;
+            case "howToPlay" :
+                howToPlayChoice();
+                break;
+            case "goBack" :
+                goBackChoice();
                 break;
         }
     }

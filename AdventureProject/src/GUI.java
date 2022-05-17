@@ -8,12 +8,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class GUI {
-
     JFrame window;
     JPanel titleScreen, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, mainImagePanel, healthPanel, inventoryPanel, utilityButtonPanel,
             deathImagePanel, deathTextPanel, deathButtonsPanel, equipmentButtonPanel, inventoryButtonPanel, informationButtonPanel, cover, equipmentPanel, informationPanel,
-            actionPanel, titleCover;
-    JLabel titleScreenLabel, hpLabelNumber, weaponLabelName, areaLabelName, mainImageLabel, healthLabel, coverLabel,
+            actionPanel, howToPlayGoBackPanel;
+    JLabel titleScreenLabel, hpLabelNumber, weaponLabelName, mainImageLabel, healthLabel, coverLabel,
             deathTextLabel1, deathTextLabel2, deathImageLabel, actionLabel, goldLabel, titleCoverLabel;
     JButton startButton, resetButton, exitButton, deathButtonContinue, deathButtonExit, mainMenuExit, inventoryImageButton, informationButton, equipmentButton;
     JTextArea mainTextArea, equipmentTextArea,informationTextArea;
@@ -27,8 +26,7 @@ public class GUI {
 
     Color gamerGrey = new Color(40, 40, 40);
     Color inkBrown = new Color(57,33,5);
-    Color silk = new Color(255,228,196, 100);
-    Color empty = new Color(255,228,196, 0);
+    Color silk = new Color(208,173,142);
 
     Border borderBorder = BorderFactory.createLineBorder(inkBrown, 2);
 
@@ -37,7 +35,6 @@ public class GUI {
 
     //Text Crawl
     int crawlCounter = 0;
-    URL textCrawlSoundURL = getClass().getResource("TextCrawl.wav");
     URL textCrawlSoundTwo = getClass().getResource("writeSix.wav");
 
 
@@ -56,14 +53,13 @@ public class GUI {
 
             if(!(SoundEffectHandler.isRunning()) || crawlCounter == 1) {
                 try {
-                    SoundEffectHandler.playFile(textCrawlSoundTwo);
+                    SoundEffectHandler.playFileRandomStart(textCrawlSoundTwo);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
                     unsupportedAudioFileException.printStackTrace();
                 }
             }
-
             if(crawlCounter == arrayNumber){
                 crawlCounter = 0;
                 timer.stop();
@@ -72,6 +68,15 @@ public class GUI {
         }
     });
 
+    AbstractAction completeText = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            timer.stop();
+            SoundEffectHandler.stop();
+            mainTextArea.setText(text);
+            crawlCounter = 0;
+        }
+    };
 
     public class MouseHandler implements MouseListener {
         @Override
@@ -106,6 +111,8 @@ public class GUI {
     public GUI(Game game) throws IOException, UnsupportedAudioFileException {
         this.game = game;
 
+        UIManager.put("MenuItem.selectionBackground", silk);
+
         //Fonts
         try{
             fontMainText = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("KnightsQuest.ttf")).deriveFont(25f);
@@ -122,7 +129,6 @@ public class GUI {
         }
         catch(IOException | FontFormatException e){
         }
-
     }
 
     public void createUI(ChoiceHandler choiceHandler, InventoryHandler inventoryHandler){
@@ -157,10 +163,10 @@ public class GUI {
 
         //Start Button
         startButtonPanel = new JPanel();
-        startButtonPanel.setBounds(300,420,220,120);
+        startButtonPanel.setBounds(280,400,240,145);
         startButtonPanel.setBackground(gamerGrey);
         startButtonPanel.setBorder(borderBorder);
-        startButtonPanel.setLayout(new GridLayout(2,1));
+        startButtonPanel.setLayout(new GridLayout(3,1));
 
         startButton = new JButton("START");
         startButton.setBackground(gamerGrey);
@@ -171,6 +177,16 @@ public class GUI {
         startButton.setFocusPainted(false);
         startButton.setActionCommand("start");
         startButtonPanel.add(startButton);
+
+        JButton mainMenuHow = new JButton("How to Play");
+        mainMenuHow.setBackground(gamerGrey);
+        mainMenuHow.setForeground(inkBrown);
+        mainMenuHow.addActionListener(choiceHandler);
+        mainMenuHow.setFont(fontStart);
+        mainMenuHow.setActionCommand("howToPlay");
+        mainMenuHow.setFocusPainted(false);
+        mainMenuHow.setOpaque(false);
+        startButtonPanel.add(mainMenuHow);
 
         mainMenuExit = new JButton("Exit");
         mainMenuExit.setBackground(gamerGrey);
@@ -184,6 +200,25 @@ public class GUI {
 
         window.add(startButtonPanel);
 
+        //How to Play Go Back Button
+        howToPlayGoBackPanel = new JPanel();
+        howToPlayGoBackPanel.setBounds(300,480,200,42);
+        howToPlayGoBackPanel.setLayout(new GridLayout(1,1));
+        howToPlayGoBackPanel.setBackground(gamerGrey);
+        howToPlayGoBackPanel.setBorder(borderBorder);
+        howToPlayGoBackPanel.setOpaque(false);
+
+        JButton goBackButton = new JButton("Go Back");
+        goBackButton.setBackground(gamerGrey);
+        goBackButton.setForeground(inkBrown);
+        goBackButton.addActionListener(choiceHandler);
+        goBackButton.setFont(fontStart);
+        goBackButton.setActionCommand("goBack");
+        goBackButton.setFocusPainted(false);
+        goBackButton.setOpaque(false);
+        howToPlayGoBackPanel.add(goBackButton);
+
+        window.add(howToPlayGoBackPanel);
 
         //Death Screen
         deathTextPanel = new JPanel();
@@ -226,6 +261,7 @@ public class GUI {
         deathButtonsPanel.setBounds(300,420,200,100);
         deathButtonsPanel.setBackground(gamerGrey);
         deathButtonsPanel.setLayout(new GridLayout(2,1));
+        deathButtonsPanel.setBorder(borderBorder);
 
         deathButtonContinue = new JButton("Main Menu");
         deathButtonContinue.setBackground(gamerGrey);
@@ -385,11 +421,12 @@ public class GUI {
 
         //InventoryButton
         inventoryButtonPanel = new JPanel();
-        inventoryButtonPanel.setBounds(460,40, 74, 74);
+        inventoryButtonPanel.setBounds(460,35, 74, 74);
         inventoryButtonPanel.setBackground(gamerGrey);
         inventoryButtonPanel.setLayout(new OverlayLayout(inventoryButtonPanel));
         inventoryButtonPanel.setBorder(borderBorder);
         inventoryButtonPanel.setOpaque(false);
+
 
         inventoryImageButton = new JButton();
         inventoryImageButton.setBackground(gamerGrey);
@@ -404,10 +441,9 @@ public class GUI {
 
         window.add(inventoryButtonPanel);
 
-
         //equipmentButton
         equipmentButtonPanel = new JPanel();
-        equipmentButtonPanel.setBounds(460,118, 74, 74);
+        equipmentButtonPanel.setBounds(460,113, 74, 74);
         equipmentButtonPanel.setBackground(gamerGrey);
         equipmentButtonPanel.setLayout(new OverlayLayout(equipmentButtonPanel));
         equipmentButtonPanel.setBorder(borderBorder);
@@ -427,13 +463,13 @@ public class GUI {
         window.add(equipmentButtonPanel);
 
         equipmentPanel = new JPanel();
-        equipmentPanel.setBounds(540,40, 200, 230);
+        equipmentPanel.setBounds(540,40, 200, 220);
         equipmentPanel.setBorder(borderInventory);
         equipmentPanel.setBackground(gamerGrey);
         equipmentPanel.setOpaque(false);
 
         equipmentTextArea = new JTextArea();
-        equipmentTextArea.setBounds(545,40, 195, 230);
+        equipmentTextArea.setBounds(545,40, 195, 220);
         equipmentTextArea.setBackground(gamerGrey);
         equipmentTextArea.setForeground(inkBrown);
         equipmentTextArea.setFont(fontsmallText);
@@ -449,7 +485,7 @@ public class GUI {
 
         //informationButton
         informationButtonPanel = new JPanel();
-        informationButtonPanel.setBounds(460,196, 74, 74);
+        informationButtonPanel.setBounds(460,191, 74, 74);
         informationButtonPanel.setBackground(gamerGrey);
         informationButtonPanel.setLayout(new OverlayLayout(informationButtonPanel));
         informationButtonPanel.setBorder(borderBorder);
@@ -469,13 +505,13 @@ public class GUI {
         window.add(informationButtonPanel);
 
         informationPanel = new JPanel();
-        informationPanel.setBounds(540,40, 200, 230);
+        informationPanel.setBounds(540,40, 200, 220);
         informationPanel.setBorder(borderInventory);
         informationPanel.setBackground(gamerGrey);
         informationPanel.setOpaque(false);
 
         informationTextArea = new JTextArea();
-        informationTextArea.setBounds(545,40, 195, 230);
+        informationTextArea.setBounds(545,40, 195, 220);
         informationTextArea.setBackground(gamerGrey);
         informationTextArea.setForeground(inkBrown);
         informationTextArea.setFont(fontsmallText);
@@ -492,8 +528,9 @@ public class GUI {
         //Inventory Panel
         inventoryPanel = new JPanel();
         inventoryPanel.setBounds(540,40, 200, 220);
-        inventoryPanel.setLayout(new GridLayout(6,1));
         inventoryPanel.setBorder(borderInventory);
+        inventoryPanel.setLayout(new GridLayout(6,1));
+//        inventoryPanel.setBorder(borderInventory);
         inventoryPanel.setBackground(gamerGrey);
         JPopupMenu dropPopUp = new JPopupMenu();
         JMenuItem dropItem = new JMenuItem("Drop Item");
@@ -582,16 +619,6 @@ public class GUI {
 
         window.add(mainImagePanel);
 
-//        //Title Cover
-//        titleCoverImage = new ImageIcon(getClass().getClassLoader().getResource("titleSIZED.png"));
-//        titleCover = new JPanel();
-//        titleCover.setBounds(0,0,800,600);
-//        titleCover.setLayout(new OverlayLayout(titleCover));
-//        titleCoverLabel = new JLabel();
-//        titleCoverLabel.setIcon(titleCoverImage);
-//        titleCover.add(titleCoverLabel);
-//        window.add(titleCover);
-
         //Cover
         coverImage = new ImageIcon(getClass().getClassLoader().getResource("backgroundSIZED.png"));
         titleCoverImage = new ImageIcon(getClass().getClassLoader().getResource("title.png"));
@@ -605,23 +632,6 @@ public class GUI {
         cover.add(titleCoverLabel);
         cover.add(coverLabel);
         window.add(cover);
-
-//        cardPanel.add(titleScreen, "titleScreen");
-//        cardPanel.add(startButtonPanel, "startButtonPanel");
-//        cardPanel.add(startButton, "startButton");
-//        cardPanel.add(inventoryPanel, "inventoryPanel");
-//        cardPanel.add(healthPanel, "healthPanel");
-//        cardPanel.add(utilityButtonPanel, "utilityButtonPanel");
-//        cardPanel.add(playerPanel, "playerPanel");
-//        cardPanel.add(mainImagePanel, "mainImagePanel");
-//        cardPanel.add(mainTextArea, "mainTextArea");
-//        cardPanel.add(deathTextPanel, "deathTextPanel");
-//        cardPanel.add(deathButtonExit, "deathButtonExit");
-//        cardPanel.add(deathButtonContinue, "deathButtonContinue");
-//        cardPanel.add(deathButtonsPanel, "deathButtonsPanel");
-//        cardPanel.add(deathImagePanel, "deathImagePanel");
-//        cardLayout.show(cardPanel,"titleScreen");
-//        window.add(cardPanel);
 
         titleScreen.setOpaque(false);
         startButtonPanel.setOpaque(false);
@@ -660,6 +670,10 @@ public class GUI {
         buttonList.add(informationButton);
         buttonList.add(inventoryImageButton);
         buttonList.add(equipmentButton);
+        buttonList.add(deathButtonContinue);
+        buttonList.add(deathButtonExit);
+        buttonList.add(goBackButton);
+        buttonList.add(mainMenuHow);
         for (JButton button: inventorySlots){
             buttonList.add(button);
         }
@@ -667,7 +681,21 @@ public class GUI {
             buttonList.add(button);
         }
 
+        inventoryImageButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,0, false), "tab");
+        inventoryImageButton.getActionMap().put("tab", inventoryHandler.actionInv);
+
+        equipmentButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT,KeyEvent.SHIFT_DOWN_MASK , false), "shift");
+        equipmentButton.getActionMap().put("shift", inventoryHandler.actionEquip);
+
+        informationButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q,0, false), "ctrl");
+        informationButton.getActionMap().put("ctrl", inventoryHandler.actionInfo);
+
+        mainTextArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0, false), "text");
+        mainTextArea.getActionMap().put("text", completeText);
+
+
         for(JButton button: buttonList){
+            button.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0, false), "none");
             button.setContentAreaFilled(false);
             button.setBorder(buttonBorderNormal);
             button.getModel().addChangeListener(e -> {
@@ -684,8 +712,18 @@ public class GUI {
                 }
             });
         }
+        dropPopUp.setBorder(buttonBorderNormal);
+        dropPopUp.setBackground(silk);
+        dropItem.setContentAreaFilled(false);
+        dropItem.setBorder(BorderFactory.createLineBorder(inkBrown,0));
 
-
+        dropItem.getModel().addChangeListener(e -> {
+            dropItem.setOpaque(true);
+            final ButtonModel model = (ButtonModel) e.getSource();
+            if (model.isRollover()) {
+                dropItem.setBackground(silk);
+            }
+        });
         window.setVisible(true);
     }
 }

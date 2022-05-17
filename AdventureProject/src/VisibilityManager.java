@@ -71,6 +71,35 @@ public class VisibilityManager {
         gui.equipmentPanel.setVisible(false);
         gui.informationPanel.setVisible(false);
         gui.actionPanel.setVisible(false);
+        gui.howToPlayGoBackPanel.setVisible(false);
+    }
+
+    public void showHowToPlayScreen(){
+        onTitle = false;
+        onGame = false;
+
+        gui.titleScreenLabel.setText("");
+        gui.titleScreen.setVisible(true);
+        gui.startButtonPanel.setVisible(false);
+        gui.titleCoverLabel.setVisible(true);
+        gui.howToPlayGoBackPanel.setVisible(true);
+
+        gui.deathButtonsPanel.setVisible(false);
+        gui.deathTextPanel.setVisible(false);
+        gui.mainTextPanel.setVisible(false);
+        gui.choiceButtonPanel.setVisible(false);
+        gui.playerPanel.setVisible(false);
+        gui.mainImagePanel.setVisible(false);
+        gui.healthPanel.setVisible(false);
+        gui.inventoryPanel.setVisible(false);
+        gui.utilityButtonPanel.setVisible(false);
+        gui.deathImagePanel.setVisible(false);
+        gui.inventoryButtonPanel.setVisible(false);
+        gui.equipmentButtonPanel.setVisible(false);
+        gui.informationButtonPanel.setVisible(false);
+        gui.equipmentPanel.setVisible(false);
+        gui.informationPanel.setVisible(false);
+        gui.actionPanel.setVisible(false);
     }
 
     public void showGameScreen(){
@@ -190,28 +219,4 @@ public class VisibilityManager {
         }
     }
 
-
-
-//    static int opacityCounter = 0;
-//
-//    public void fadeOut(JPanel frame){
-//
-//        System.out.println(opacityCounter);
-//        opacityCounter = 0;
-//        fadeTimer = new Timer(50, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                frame.setBackground(new Color(0,0,0,opacityCounter));
-//                opacityCounter++;
-//                gui.window.add(frame);
-//
-//                if(opacityCounter >= 255){
-//                    opacityCounter = 255;
-//                    fadeTimer.stop();
-//                }
-//                System.out.println(opacityCounter);
-//            }
-//        });
-//        fadeTimer.start();
-//    }
 }
