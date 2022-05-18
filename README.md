@@ -1,5 +1,5 @@
 # Text-Quest
 
-Text adventure game made for fun.
+A text-based adventure game I made for fun during my Spring semester of 2022. The primary purpose for making this project was to develop my skills in Java UI development.
 
-Original images and sounds are not mine, but were modifed extensively for use in project.
+Original images and sounds are **not** mine, but were modified extensively for use in project.
