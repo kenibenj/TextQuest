@@ -1460,7 +1460,7 @@ public class Story {
         bear.isAlert = true;
 
         if (bear.isAlive) {
-            gui.prepareText("You try to grab the sword, but a bear slashes at you before you can.\n\nDamn.");
+            gui.prepareText("You try to grab the sword, but a bear slashes at you before you can.\n\nDarn.");
             gui.actionLabel.setText("You receive 3 damage!");
 
             vm.setPlayerHP(-3);
@@ -1717,7 +1717,7 @@ public class Story {
 
     public void ending() {
 
-        gui.prepareText("Guard: You have killed the bandits? Thank you, stranger!\n\nWhat a good samaritan you are.\n\n");
+        gui.prepareText("Guard: You have cleared out the bandits? Thank you, stranger!\n\nWhat a good samaritan you are.\n\n");
 
         gui.choices[0].setText("Continue");
         gui.choices[1].setText("");
